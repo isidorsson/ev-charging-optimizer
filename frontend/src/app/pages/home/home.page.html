@@ -1,0 +1,142 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      <ion-icon name="flash-outline" aria-hidden="true"></ion-icon>
+      EV Charging Optimizer
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <section class="hero">
+    <h1>When should you charge?</h1>
+    <p class="subtle">
+      We blend live Nord Pool spot prices with grid carbon intensity to pick the
+      cheapest, cleanest hours before your departure.
+    </p>
+  </section>
+
+  <form class="row-gap" (ngSubmit)="submit()">
+    <div class="surface-card row-gap">
+      <h2>Your car</h2>
+
+      <ion-item lines="none">
+        <ion-label position="stacked">Battery capacity</ion-label>
+        <ion-input
+          type="number"
+          inputmode="decimal"
+          min="10"
+          max="200"
+          [value]="form().batteryKwh"
+          (ionInput)="patch('batteryKwh', +$any($event.target).value)"
+        ></ion-input>
+        <ion-note slot="end">kWh</ion-note>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label position="stacked">
+          Current charge: <span class="metric">{{ form().currentSoc }}%</span>
+        </ion-label>
+        <ion-range
+          min="0"
+          max="100"
+          step="1"
+          [value]="form().currentSoc"
+          (ionInput)="patch('currentSoc', +$any($event.target).value)"
+          color="secondary"
+        ></ion-range>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label position="stacked">
+          Target charge: <span class="metric">{{ form().targetSoc }}%</span>
+        </ion-label>
+        <ion-range
+          min="0"
+          max="100"
+          step="1"
+          [value]="form().targetSoc"
+          (ionInput)="patch('targetSoc', +$any($event.target).value)"
+          color="primary"
+        ></ion-range>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label position="stacked">Max charge rate</ion-label>
+        <ion-input
+          type="number"
+          inputmode="decimal"
+          min="1"
+          max="350"
+          [value]="form().maxChargeKw"
+          (ionInput)="patch('maxChargeKw', +$any($event.target).value)"
+        ></ion-input>
+        <ion-note slot="end">kW</ion-note>
+      </ion-item>
+    </div>
+
+    <div class="surface-card row-gap">
+      <h2>Trip & tariff</h2>
+
+      <ion-item lines="none">
+        <ion-label position="stacked">
+          <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+          Departure time
+        </ion-label>
+        <ion-input
+          type="datetime-local"
+          [value]="form().departureTime"
+          (ionInput)="patch('departureTime', $any($event.target).value)"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label position="stacked">Price region</ion-label>
+        <ion-select
+          [value]="form().region"
+          interface="popover"
+          (ionChange)="patch('region', $any($event.target).value)"
+        >
+          <ion-select-option value="SE1">SE1 — North</ion-select-option>
+          <ion-select-option value="SE2">SE2 — North-Central</ion-select-option>
+          <ion-select-option value="SE3">SE3 — South-Central</ion-select-option>
+          <ion-select-option value="SE4">SE4 — South</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+
+    <div class="surface-card row-gap">
+      <h2>What matters more?</h2>
+      <p class="subtle">
+        Slide between cost-only and carbon-only. We'll tune the schedule.
+      </p>
+
+      <ion-item lines="none">
+        <ion-range
+          min="0"
+          max="1"
+          step="0.05"
+          [value]="form().carbonWeight"
+          (ionInput)="patch('carbonWeight', +$any($event.target).value)"
+        >
+          <ion-icon slot="start" name="cash-outline" aria-hidden="true"></ion-icon>
+          <ion-icon slot="end" name="leaf-outline" aria-hidden="true"></ion-icon>
+        </ion-range>
+      </ion-item>
+      <p class="weight-label metric">{{ weightLabel() }}</p>
+    </div>
+
+    <p *ngIf="error()" class="error">{{ error() }}</p>
+
+    <ion-button
+      type="submit"
+      expand="block"
+      shape="round"
+      [disabled]="loading()"
+    >
+      <ion-spinner *ngIf="loading()" name="crescent" slot="start"></ion-spinner>
+      <span *ngIf="!loading()">Find my charging window</span>
+      <span *ngIf="loading()">Crunching prices…</span>
+    </ion-button>
+  </form>
+</ion-content>

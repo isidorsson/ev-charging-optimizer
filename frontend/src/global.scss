@@ -1,0 +1,38 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+ion-content {
+  --background: linear-gradient(180deg, var(--app-bg-deep) 0%, var(--app-bg-surface) 100%);
+}
+
+@media (prefers-color-scheme: light) {
+  ion-content {
+    --background: linear-gradient(180deg, #f1f5f9 0%, #ffffff 100%);
+  }
+}
+
+.subtle {
+  color: var(--app-text-muted);
+  font-size: 0.85rem;
+}
+
+.metric {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.surface-card {
+  background: var(--app-bg-card);
+  border: 1px solid var(--app-divider);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.row-gap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

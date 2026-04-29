@@ -1,0 +1,132 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Your charging plan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ng-container *ngIf="result(); else empty">
+    <section class="surface-card summary">
+      <div class="metric-row">
+        <div class="metric-pill">
+          <ion-icon name="cash-outline" aria-hidden="true"></ion-icon>
+          <div>
+            <span class="value metric">
+              {{ result()!.summary.totalCost | number: "1.2-2" }}
+              {{ result()!.summary.currency }}
+            </span>
+            <span class="subtle">total cost</span>
+          </div>
+        </div>
+        <div class="metric-pill">
+          <ion-icon name="leaf-outline" aria-hidden="true"></ion-icon>
+          <div>
+            <span class="value metric">
+              {{ (result()!.summary.totalCarbonGrams / 1000) | number: "1.1-1" }} kg
+            </span>
+            <span class="subtle">CO₂ emitted</span>
+          </div>
+        </div>
+        <div class="metric-pill highlight">
+          <ion-icon name="trending-down-outline" aria-hidden="true"></ion-icon>
+          <div>
+            <span class="value metric">
+              {{ (result()!.summary.savingsVsNaive * 100) | number: "1.0-0" }}%
+            </span>
+            <span class="subtle">vs charging now</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="subtle window">
+        Cheapest window starts
+        <strong>{{ formatTime(result()!.summary.cheapestWindowStart) }}</strong>
+        — about
+        <strong>{{ result()!.summary.chargingHours | number: "1.1-1" }} h</strong>
+        of charging at your set rate.
+      </p>
+
+      <ion-button
+        fill="outline"
+        shape="round"
+        (click)="enableAlert()"
+        [disabled]="!result()!.summary.cheapestWindowStart"
+      >
+        <ion-icon slot="start" name="notifications-outline"></ion-icon>
+        Notify me when it starts
+      </ion-button>
+
+      <ion-chip
+        *ngIf="notifyState() !== 'idle'"
+        [color]="notifyState() === 'ok' ? 'success' : 'warning'"
+      >
+        <ion-label>
+          <ng-container [ngSwitch]="notifyState()">
+            <span *ngSwitchCase="'ok'">Notification scheduled.</span>
+            <span *ngSwitchCase="'denied'">Permission denied.</span>
+            <span *ngSwitchCase="'unsupported'">Push not supported on this device.</span>
+            <span *ngSwitchCase="'error'">Couldn't schedule. Try again.</span>
+          </ng-container>
+        </ion-label>
+      </ion-chip>
+    </section>
+
+    <section class="surface-card chart">
+      <div class="chart-head">
+        <h2>Hour by hour</h2>
+        <span class="subtle">price · charging hours highlighted</span>
+      </div>
+
+      <div class="bars">
+        <div
+          class="bar-col"
+          *ngFor="let b of bars()"
+          [class.charging]="b.charging"
+          [title]="b.hour + ' · ' + (b.pricePerKwh | number: '1.2-3') + ' ' + b.currency + '/kWh · ' + (b.intensityGCo2PerKwh | number: '1.0-0') + ' gCO₂/kWh'"
+        >
+          <div class="bar" [style.height.%]="20 + b.priceRel * 80"></div>
+          <span class="hour">{{ b.hour }}</span>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span class="dot charging"></span> Charging hour
+        <span class="dot resting"></span> Skip
+      </div>
+    </section>
+
+    <section class="surface-card list">
+      <h2>Schedule</h2>
+      <ul class="schedule-rows">
+        <li
+          *ngFor="let s of result()!.schedule"
+          [class.charging]="s.charging"
+        >
+          <div class="when">
+            <span class="metric">
+              {{ s.startsAt | date: "EEE HH:mm" }}
+            </span>
+            <ion-note>{{ s.energyKwh | number: "1.1-1" }} kWh</ion-note>
+          </div>
+          <div class="figs">
+            <span>{{ s.pricePerKwh | number: "1.2-3" }} {{ s.currency }}/kWh</span>
+            <span class="subtle">{{ s.intensityGCo2PerKwh | number: "1.0-0" }} gCO₂/kWh</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </ng-container>
+
+  <ng-template #empty>
+    <div class="empty">
+      <p>No schedule yet.</p>
+      <ion-button (click)="goBack()" shape="round">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+        Back to setup
+      </ion-button>
+    </div>
+  </ng-template>
+</ion-content>

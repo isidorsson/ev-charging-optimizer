@@ -1,0 +1,53 @@
+:root {
+  --ion-color-primary: #4ade80;
+  --ion-color-primary-rgb: 74, 222, 128;
+  --ion-color-primary-contrast: #042713;
+  --ion-color-primary-contrast-rgb: 4, 39, 19;
+  --ion-color-primary-shade: #36b966;
+  --ion-color-primary-tint: #5be590;
+
+  --ion-color-secondary: #38bdf8;
+  --ion-color-secondary-rgb: 56, 189, 248;
+  --ion-color-secondary-contrast: #00253c;
+  --ion-color-secondary-contrast-rgb: 0, 37, 60;
+  --ion-color-secondary-shade: #2da7dc;
+  --ion-color-secondary-tint: #4cc6fa;
+
+  --ion-color-warning: #facc15;
+  --ion-color-danger: #f87171;
+  --ion-color-success: #4ade80;
+
+  --app-bg-deep: #0d1f2d;
+  --app-bg-surface: #15293a;
+  --app-bg-card: #1c3346;
+  --app-text-strong: #f8fafc;
+  --app-text-muted: #94a3b8;
+  --app-divider: rgba(255, 255, 255, 0.08);
+
+  --ion-background-color: var(--app-bg-deep);
+  --ion-background-color-rgb: 13, 31, 45;
+  --ion-text-color: var(--app-text-strong);
+  --ion-text-color-rgb: 248, 250, 252;
+  --ion-toolbar-background: var(--app-bg-surface);
+  --ion-tab-bar-background: var(--app-bg-surface);
+  --ion-card-background: var(--app-bg-card);
+  --ion-item-background: transparent;
+  --ion-border-color: var(--app-divider);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --ion-background-color: #f8fafc;
+    --ion-background-color-rgb: 248, 250, 252;
+    --ion-text-color: #0f172a;
+    --ion-text-color-rgb: 15, 23, 42;
+    --ion-toolbar-background: #ffffff;
+    --ion-card-background: #ffffff;
+    --ion-tab-bar-background: #ffffff;
+    --ion-border-color: rgba(15, 23, 42, 0.08);
+
+    --app-text-strong: #0f172a;
+    --app-text-muted: #475569;
+    --app-divider: rgba(15, 23, 42, 0.08);
+  }
+}

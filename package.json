@@ -1,0 +1,19 @@
+{
+  "name": "ev-charging-optimizer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "EV charging schedule optimizer using real-time spot prices and grid carbon intensity. Hybrid mobile via Ionic + Angular, served by a Node/Express backend.",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "install:all": "npm install && npm --prefix backend install && npm --prefix frontend install",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:backend": "npm --prefix backend run build",
+    "build": "npm run build:frontend && npm run build:backend",
+    "start": "node backend/dist/server.js",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run start",
+    "postinstall": "npm --prefix backend install && npm --prefix frontend install"
+  }
+}
