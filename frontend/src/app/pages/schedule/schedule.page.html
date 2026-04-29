@@ -75,7 +75,7 @@
             (click)="enableAlert()"
             [disabled]="!result()!.summary.cheapestWindowStart"
           >
-            <ion-icon slot="start" name="notifications-outline" aria-hidden="true"></ion-icon>
+            <svg lucideBell slot="start"></svg>
             {{ "schedule.window.notify" | translate }}
           </ion-button>
 
@@ -230,7 +230,7 @@
           {{ "schedule.empty.sub" | translate }}
         </p>
         <ion-button (click)="goBack()" fill="outline">
-          <ion-icon slot="start" name="arrow-back-outline" aria-hidden="true"></ion-icon>
+          <svg lucideArrowLeft slot="start"></svg>
           {{ "schedule.empty.back" | translate }}
         </ion-button>
       </div>

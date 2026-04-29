@@ -9,7 +9,7 @@
         (click)="goToSettings()"
         [attr.aria-label]="'home.ariaSettings' | translate"
       >
-        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+        <svg lucideSettings slot="icon-only"></svg>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -235,12 +235,12 @@
         <div class="weight-track">
           <div class="weight-anchors">
             <span class="anchor-text" id="anchor-cost">
-              <ion-icon name="cash-outline" aria-hidden="true"></ion-icon>
+              <svg lucideBanknote></svg>
               {{ "home.priority.cost" | translate }}
             </span>
             <span class="anchor-text right" id="anchor-carbon">
               {{ "home.priority.carbon" | translate }}
-              <ion-icon name="leaf-outline" aria-hidden="true"></ion-icon>
+              <svg lucideLeaf></svg>
             </span>
           </div>
 
@@ -271,7 +271,7 @@
           role="alert"
           aria-live="assertive"
         >
-          <ion-icon name="alert-circle-outline" aria-hidden="true"></ion-icon>
+          <svg lucideCircleAlert></svg>
           <span>{{ error()! | translate }}</span>
         </p>
 

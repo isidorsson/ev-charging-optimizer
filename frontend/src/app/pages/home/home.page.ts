@@ -12,22 +12,18 @@ import {
   IonInput,
   IonRange,
   IonButton,
-  IonIcon,
   IonNote,
   IonSelect,
   IonSelectOption,
   IonSpinner,
   IonButtons,
 } from "@ionic/angular/standalone";
-import { addIcons } from "ionicons";
 import {
-  flashOutline,
-  leafOutline,
-  cashOutline,
-  timeOutline,
-  alertCircleOutline,
-  settingsOutline,
-} from "ionicons/icons";
+  LucideSettings,
+  LucideBanknote,
+  LucideLeaf,
+  LucideCircleAlert,
+} from "@lucide/angular";
 import { TranslatePipe } from "@ngx-translate/core";
 
 import { ApiService, type OptimizeRequest } from "../../services/api.service";
@@ -67,12 +63,15 @@ function defaultDeparture(): string {
     IonInput,
     IonRange,
     IonButton,
-    IonIcon,
     IonNote,
     IonSelect,
     IonSelectOption,
     IonSpinner,
     IonButtons,
+    LucideSettings,
+    LucideBanknote,
+    LucideLeaf,
+    LucideCircleAlert,
   ],
   templateUrl: "./home.page.html",
   styleUrl: "./home.page.scss",
@@ -138,17 +137,6 @@ export class HomePage {
     if (w < 0.8) return "home.weight.mostlyClean";
     return "home.weight.greenest";
   });
-
-  constructor() {
-    addIcons({
-      flashOutline,
-      leafOutline,
-      cashOutline,
-      timeOutline,
-      alertCircleOutline,
-      settingsOutline,
-    });
-  }
 
   patch<K extends keyof FormState>(key: K, value: FormState[K]): void {
     this.form.update((f) => ({ ...f, [key]: value }));

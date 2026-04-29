@@ -9,19 +9,10 @@ import {
   IonButtons,
   IonBackButton,
   IonButton,
-  IonIcon,
   IonChip,
   IonLabel,
 } from "@ionic/angular/standalone";
-import { addIcons } from "ionicons";
-import {
-  notificationsOutline,
-  arrowBackOutline,
-  flashOutline,
-  leafOutline,
-  cashOutline,
-  trendingDownOutline,
-} from "ionicons/icons";
+import { LucideBell, LucideArrowLeft } from "@lucide/angular";
 import { TranslatePipe } from "@ngx-translate/core";
 
 import { ScheduleStoreService } from "../../services/schedule-store.service";
@@ -48,9 +39,10 @@ interface BarSlot extends ScheduleSlot {
     IonButtons,
     IonBackButton,
     IonButton,
-    IonIcon,
     IonChip,
     IonLabel,
+    LucideBell,
+    LucideArrowLeft,
   ],
   templateUrl: "./schedule.page.html",
   styleUrl: "./schedule.page.scss",
@@ -81,17 +73,6 @@ export class SchedulePage {
       carbonRel: norm(s.intensityGCo2PerKwh, cMin, cMax),
     }));
   });
-
-  constructor() {
-    addIcons({
-      notificationsOutline,
-      arrowBackOutline,
-      flashOutline,
-      leafOutline,
-      cashOutline,
-      trendingDownOutline,
-    });
-  }
 
   goBack(): void {
     this.router.navigate(["/"]);
