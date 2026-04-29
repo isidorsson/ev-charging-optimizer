@@ -59,30 +59,37 @@
   transition: color 120ms ease;
 }
 
-/* ── Backdrop ───────────────────────────────────────────────── */
+/* ── Dialog (host element) ─────────────────────────────────────
+   Native <dialog> via .showModal() renders in the browser's top
+   layer, which escapes ALL stacking contexts and any transformed
+   ancestor. Inline top/left coordinates therefore land where we
+   expect them to (viewport-relative).
+   ──────────────────────────────────────────────────────────── */
 
-.picker-backdrop {
-  position: fixed;
-  inset: 0;
+.picker-dialog {
+  /* Reset UA defaults so we can use the inner .picker-panel for chrome */
+  margin: 0;
+  padding: 0;
+  border: 0;
   background: transparent;
-  z-index: 9990;
+  color: inherit;
+  max-width: none;
+  max-height: none;
+
+  &::backdrop {
+    background: transparent;
+  }
 }
 
 @media (max-width: 767px) {
-  .picker-backdrop {
+  .picker-dialog::backdrop {
     background: rgba(0, 0, 0, 0.45);
   }
 }
 
 /* ── Panel ──────────────────────────────────────────────────── */
 
-/*
-  Always position: fixed so the panel escapes any overflow / stacking
-  context set by the surrounding form cards. Coordinates come from
-  the component (computed via getBoundingClientRect on the trigger).
-*/
 .picker-panel {
-  position: fixed;
   background: var(--app-bg-elevated);
   border: 1px solid var(--app-divider-strong);
   border-radius: var(--radius-md);
@@ -94,24 +101,28 @@
   flex-direction: column;
   gap: 14px;
   padding: 16px;
-
-  z-index: 9999;
 }
 
-/* Desktop: floating popover (top/left set inline) */
+/* Desktop: floating popover anchored to trigger (top/left set inline on dialog) */
 @media (min-width: 768px) {
-  .picker-panel {
+  .picker-dialog {
+    position: fixed;
     width: min(360px, calc(100vw - 32px));
   }
 }
 
 /* Mobile: full-width bottom sheet — override inline coords. */
 @media (max-width: 767px) {
-  .picker-panel {
+  .picker-dialog {
+    position: fixed;
     top: auto !important;
     left: 0 !important;
     right: 0;
     bottom: 0;
+    width: 100%;
+  }
+
+  .picker-panel {
     border-radius: var(--radius-md) var(--radius-md) 0 0;
     border-bottom: 0;
     padding: 18px 18px 24px;

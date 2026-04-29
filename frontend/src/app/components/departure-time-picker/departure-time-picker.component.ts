@@ -260,7 +260,15 @@ export class DepartureTimePickerComponent {
      * `open()` here, then sync the dialog. ~6 lines.
      */
     effect(() => {
-      // Your code here.
+      const dialog = this.dialogRef()?.nativeElement;
+      if (!dialog) return;
+      const isOpen = this.open();
+      if (isOpen && !dialog.open) {
+        dialog.showModal();
+        this.computePanelPosition();
+      } else if (!isOpen && dialog.open) {
+        dialog.close();
+      }
     });
   }
 
