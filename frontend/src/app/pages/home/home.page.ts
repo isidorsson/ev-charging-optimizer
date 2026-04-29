@@ -17,6 +17,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonSpinner,
+  IonButtons,
 } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import {
@@ -25,7 +26,9 @@ import {
   cashOutline,
   timeOutline,
   alertCircleOutline,
+  settingsOutline,
 } from "ionicons/icons";
+import { TranslatePipe } from "@ngx-translate/core";
 
 import { ApiService, type OptimizeRequest } from "../../services/api.service";
 import { ScheduleStoreService } from "../../services/schedule-store.service";
@@ -54,6 +57,7 @@ function defaultDeparture(): string {
   imports: [
     CommonModule,
     FormsModule,
+    TranslatePipe,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -68,6 +72,7 @@ function defaultDeparture(): string {
     IonSelect,
     IonSelectOption,
     IonSpinner,
+    IonButtons,
   ],
   templateUrl: "./home.page.html",
   styleUrl: "./home.page.scss",
@@ -107,14 +112,31 @@ export class HomePage {
     };
   });
 
-  readonly departureLabel = computed(() => {
+  readonly departureLabelKey = computed(() => {
     const ms = new Date(this.form().departureTime).getTime();
-    if (Number.isNaN(ms)) return "—";
+    if (Number.isNaN(ms)) return "home.eta.dash";
     const diffH = (ms - Date.now()) / 3_600_000;
-    if (diffH < 0) return "in the past";
-    if (diffH < 1) return "in under an hour";
-    if (diffH < 24) return `in ~${Math.round(diffH)} h`;
-    return `in ~${Math.round(diffH / 24)} d`;
+    if (diffH < 0) return "home.eta.past";
+    if (diffH < 1) return "home.eta.lessThanHour";
+    if (diffH < 24) return "home.eta.hours";
+    return "home.eta.days";
+  });
+
+  readonly departureCount = computed(() => {
+    const ms = new Date(this.form().departureTime).getTime();
+    if (Number.isNaN(ms)) return 0;
+    const diffH = (ms - Date.now()) / 3_600_000;
+    if (diffH < 24) return Math.round(diffH);
+    return Math.round(diffH / 24);
+  });
+
+  readonly weightLabelKey = computed(() => {
+    const w = this.form().carbonWeight;
+    if (w < 0.2) return "home.weight.costFirst";
+    if (w < 0.45) return "home.weight.mostlyCost";
+    if (w < 0.55) return "home.weight.balanced";
+    if (w < 0.8) return "home.weight.mostlyClean";
+    return "home.weight.greenest";
   });
 
   constructor() {
@@ -124,6 +146,7 @@ export class HomePage {
       cashOutline,
       timeOutline,
       alertCircleOutline,
+      settingsOutline,
     });
   }
 
@@ -131,24 +154,19 @@ export class HomePage {
     this.form.update((f) => ({ ...f, [key]: value }));
   }
 
-  weightLabel(): string {
-    const w = this.form().carbonWeight;
-    if (w < 0.2) return "Cost first";
-    if (w < 0.45) return "Mostly cost, lean clean";
-    if (w < 0.55) return "Balanced";
-    if (w < 0.8) return "Mostly clean, lean cost";
-    return "Greenest hours only";
+  goToSettings(): void {
+    this.router.navigate(["/settings"]);
   }
 
   async submit(): Promise<void> {
     this.error.set(null);
     const f = this.form();
     if (f.targetSoc <= f.currentSoc) {
-      this.error.set("Target charge must be above current charge.");
+      this.error.set("home.errors.targetBelowCurrent");
       return;
     }
     if (new Date(f.departureTime).getTime() <= Date.now()) {
-      this.error.set("Departure must be in the future.");
+      this.error.set("home.errors.departurePast");
       return;
     }
     const request: OptimizeRequest = {
@@ -167,7 +185,7 @@ export class HomePage {
       this.router.navigate(["/schedule"]);
     } catch (err) {
       console.error(err);
-      this.error.set("Could not compute schedule. Please try again.");
+      this.error.set("home.errors.optimizeFailed");
     } finally {
       this.loading.set(false);
     }

@@ -1,0 +1,166 @@
+{
+  "common": {
+    "back": "Tillbaka",
+    "loading": "Laddar…"
+  },
+  "home": {
+    "title": "Elbil · Nätoptimerare",
+    "ariaSettings": "Öppna inställningar",
+    "eyebrowBrief": "Brief",
+    "headline": {
+      "before": "Ladda när elnätet är",
+      "cheapest": "billigast",
+      "and": "&",
+      "cleanest": "renast",
+      "after": "."
+    },
+    "lede": "De flesta laddappar styr efter klockan. Vi styr efter nätet — kombinerar spotpriser i realtid med koldioxidintensitet för att flytta laddningen till rätt fönster.",
+    "stats": {
+      "savingsValue": "20–60",
+      "savingsLabel": "billigare än att ladda direkt",
+      "forecastValue": "~24",
+      "forecastLabel": "prognoshorisont",
+      "pwaLabel": "offline + push-aviseringar"
+    },
+    "eyebrowVehicle": "Fordon",
+    "vehicle": {
+      "title": "Din bil",
+      "batteryCapacity": "Batterikapacitet",
+      "maxChargeRate": "Max laddeffekt",
+      "currentCharge": "Aktuell laddning",
+      "targetCharge": "Mållddning",
+      "ariaCurrent": "Aktuell batteriladdning i procent",
+      "ariaTarget": "Mållddning i procent"
+    },
+    "eyebrowDeparture": "Avresa",
+    "departure": {
+      "title": "När åker du?",
+      "time": "Avresetid",
+      "timeAria": "Datum och tid för avresa",
+      "region": "Prisregion",
+      "regionAria": "Prisregion"
+    },
+    "region": {
+      "SE1": "SE1 — Norra",
+      "SE2": "SE2 — Norra mellan",
+      "SE3": "SE3 — Södra mellan",
+      "SE4": "SE4 — Södra"
+    },
+    "eyebrowPreview": "Förhandsvisning",
+    "preview": {
+      "title": "Vad vi optimerar",
+      "energyNeeded": "Energibehov",
+      "atMaxRate": "Vid max effekt",
+      "windowAvailable": "Tillgängligt fönster",
+      "feasible": "Gott om tid — vi plockar de billigaste timmarna.",
+      "tight": "Snävt fönster — laddningen körs kontinuerligt."
+    },
+    "eyebrowPriority": "Prioritet",
+    "priority": {
+      "title": "Kostnad eller koldioxid?",
+      "help": "Skjut reglaget mellan enbart kostnad och enbart koldioxid. Optimeraren rankar om varje prognosslot med en viktad min–max-poäng.",
+      "cost": "Kostnad",
+      "carbon": "Koldioxid",
+      "aria": "Vikt mellan kostnad och koldioxid"
+    },
+    "weight": {
+      "costFirst": "Kostnad först",
+      "mostlyCost": "Mest kostnad, lite renare",
+      "balanced": "Balanserad",
+      "mostlyClean": "Mest rent, lite billigare",
+      "greenest": "Bara grönaste timmarna"
+    },
+    "cta": {
+      "submit": "Hitta mitt laddfönster",
+      "loading": "Räknar priser…",
+      "foot": "Öppna Nord Pool- och National Grid-API:er · ingen registrering"
+    },
+    "errors": {
+      "targetBelowCurrent": "Mållddningen måste vara högre än aktuell laddning.",
+      "departurePast": "Avresan måste ligga i framtiden.",
+      "optimizeFailed": "Kunde inte beräkna schemat. Försök igen."
+    },
+    "eta": {
+      "dash": "—",
+      "past": "i det förflutna",
+      "lessThanHour": "om mindre än en timme",
+      "hours": "om ~{{count}} h",
+      "days": "om ~{{count}} d"
+    }
+  },
+  "schedule": {
+    "ariaBack": "Tillbaka till brief",
+    "title": "Schema · Resultat",
+    "eyebrowOutput": "Resultat",
+    "headline": "Din laddplan.",
+    "subline": "Beräknat mot {{count}} timslots i prognosen. Lägre poäng vinner.",
+    "kpi": {
+      "savingsAria": "Sammanfattning av besparingar",
+      "delta": "Δ vs. ladda direkt",
+      "cheaper": "billigare · samma energi levererad",
+      "totalCost": "Total kostnad",
+      "co2": "CO₂",
+      "charging": "Laddning"
+    },
+    "eyebrowWindow": "Fönstret öppnar",
+    "window": {
+      "meta": "Plugga in då — vi håller koll på klockan.",
+      "notify": "Påminn mig"
+    },
+    "notify": {
+      "scheduled": "Schemalagt",
+      "denied": "Behörighet nekad",
+      "unsupported": "Stöds ej",
+      "error": "Fel · försök igen"
+    },
+    "eyebrowForecast": "Prognos",
+    "forecast": {
+      "title": "Timme för timme",
+      "help": "Stapelhöjd = spotpris · markerade timmar = optimal laddning. Håll musen över en stapel för detaljer.",
+      "aria": "Stapeldiagram över timpriser",
+      "barAria": "{{hour}}, {{price}} {{currency}} per kWh, {{co2}} gram CO₂ per kWh{{state}}",
+      "stateCharging": ", laddar"
+    },
+    "legend": {
+      "charging": "Laddar",
+      "skip": "Hoppa över",
+      "axis": "y · {{currency}}/kWh"
+    },
+    "eyebrowLedger": "Slotlista",
+    "ledger": {
+      "title": "Plan i detalj",
+      "colTime": "Tid",
+      "colState": "Status",
+      "colEnergy": "Energi",
+      "colPrice": "Pris",
+      "colCo2": "CO₂",
+      "colRelative": "Relativt pris",
+      "charge": "Ladda",
+      "skip": "Hoppa"
+    },
+    "empty": {
+      "eyebrow": "Ingen data",
+      "title": "Inget schema ännu.",
+      "sub": "Ange resan på briefsidan och kom tillbaka.",
+      "back": "Tillbaka till brief"
+    }
+  },
+  "settings": {
+    "title": "Inställningar",
+    "timeFormat": {
+      "label": "Tidsformat",
+      "h12": "12-timmar (1:30 PM)",
+      "h24": "24-timmar (13:30)"
+    },
+    "language": {
+      "label": "Språk",
+      "en": "English",
+      "sv": "Svenska",
+      "de": "Deutsch",
+      "es": "Español"
+    },
+    "note": {
+      "datetimePicker": "Obs: avresetidens väljare på startsidan styrs av din webbläsare och kan ha sitt eget format."
+    }
+  }
+}

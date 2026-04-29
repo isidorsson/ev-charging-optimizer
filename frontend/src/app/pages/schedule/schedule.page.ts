@@ -22,13 +22,14 @@ import {
   cashOutline,
   trendingDownOutline,
 } from "ionicons/icons";
+import { TranslatePipe } from "@ngx-translate/core";
 
 import { ScheduleStoreService } from "../../services/schedule-store.service";
 import { NotificationsService } from "../../services/notifications.service";
 import type { ScheduleSlot } from "../../services/api.service";
+import { LocalizedTimePipe } from "../../pipes/localized-time.pipe";
 
 interface BarSlot extends ScheduleSlot {
-  hour: string;
   priceRel: number;
   carbonRel: number;
 }
@@ -38,6 +39,8 @@ interface BarSlot extends ScheduleSlot {
   standalone: true,
   imports: [
     CommonModule,
+    TranslatePipe,
+    LocalizedTimePipe,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -74,10 +77,6 @@ export class SchedulePage {
       hi === lo ? 0.5 : (v - lo) / (hi - lo);
     return r.schedule.map((s) => ({
       ...s,
-      hour: new Date(s.startsAt).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
       priceRel: norm(s.pricePerKwh, pMin, pMax),
       carbonRel: norm(s.intensityGCo2PerKwh, cMin, cMax),
     }));
@@ -91,15 +90,6 @@ export class SchedulePage {
       leafOutline,
       cashOutline,
       trendingDownOutline,
-    });
-  }
-
-  formatTime(iso: string | null): string {
-    if (!iso) return "—";
-    return new Date(iso).toLocaleString([], {
-      weekday: "short",
-      hour: "2-digit",
-      minute: "2-digit",
     });
   }
 

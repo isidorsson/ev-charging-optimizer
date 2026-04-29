@@ -1,0 +1,166 @@
+{
+  "common": {
+    "back": "Back",
+    "loading": "Loading…"
+  },
+  "home": {
+    "title": "EV · Grid Optimizer",
+    "ariaSettings": "Open settings",
+    "eyebrowBrief": "Brief",
+    "headline": {
+      "before": "Charge when the grid is",
+      "cheapest": "cheapest",
+      "and": "&",
+      "cleanest": "cleanest",
+      "after": "."
+    },
+    "lede": "Most charging apps schedule by the clock. We schedule by the grid — blending live spot prices with carbon intensity to shift the same charge into the right window.",
+    "stats": {
+      "savingsValue": "20–60",
+      "savingsLabel": "cheaper vs. plug-in-now",
+      "forecastValue": "~24",
+      "forecastLabel": "forecast horizon",
+      "pwaLabel": "offline + push notifications"
+    },
+    "eyebrowVehicle": "Vehicle",
+    "vehicle": {
+      "title": "Your car",
+      "batteryCapacity": "Battery capacity",
+      "maxChargeRate": "Max charge rate",
+      "currentCharge": "Current charge",
+      "targetCharge": "Target charge",
+      "ariaCurrent": "Current battery charge percentage",
+      "ariaTarget": "Target battery charge percentage"
+    },
+    "eyebrowDeparture": "Departure",
+    "departure": {
+      "title": "When are you leaving?",
+      "time": "Departure time",
+      "timeAria": "Departure date and time",
+      "region": "Price region",
+      "regionAria": "Price region"
+    },
+    "region": {
+      "SE1": "SE1 — North",
+      "SE2": "SE2 — North-Central",
+      "SE3": "SE3 — South-Central",
+      "SE4": "SE4 — South"
+    },
+    "eyebrowPreview": "Preview",
+    "preview": {
+      "title": "What we'll optimize",
+      "energyNeeded": "Energy needed",
+      "atMaxRate": "At max rate",
+      "windowAvailable": "Window available",
+      "feasible": "Plenty of time — we'll cherry-pick the cheapest hours.",
+      "tight": "Tight window — charging will run continuously."
+    },
+    "eyebrowPriority": "Priority",
+    "priority": {
+      "title": "Cost or carbon?",
+      "help": "Slide between cost-only and carbon-only. The optimizer re-ranks every forecast slot using a weighted min–max score.",
+      "cost": "Cost",
+      "carbon": "Carbon",
+      "aria": "Cost vs carbon priority weight"
+    },
+    "weight": {
+      "costFirst": "Cost first",
+      "mostlyCost": "Mostly cost, lean clean",
+      "balanced": "Balanced",
+      "mostlyClean": "Mostly clean, lean cost",
+      "greenest": "Greenest hours only"
+    },
+    "cta": {
+      "submit": "Find My Charging Window",
+      "loading": "Crunching prices…",
+      "foot": "Public Nord Pool + National Grid APIs · no signup"
+    },
+    "errors": {
+      "targetBelowCurrent": "Target charge must be above current charge.",
+      "departurePast": "Departure must be in the future.",
+      "optimizeFailed": "Could not compute schedule. Please try again."
+    },
+    "eta": {
+      "dash": "—",
+      "past": "in the past",
+      "lessThanHour": "in under an hour",
+      "hours": "in ~{{count}} h",
+      "days": "in ~{{count}} d"
+    }
+  },
+  "schedule": {
+    "ariaBack": "Back to brief",
+    "title": "Schedule · Output",
+    "eyebrowOutput": "Output",
+    "headline": "Your charging plan.",
+    "subline": "Computed against {{count}} hourly forecast slots. Lower score wins.",
+    "kpi": {
+      "savingsAria": "Savings summary",
+      "delta": "Δ vs. plug-in-now",
+      "cheaper": "cheaper · same energy delivered",
+      "totalCost": "Total cost",
+      "co2": "CO₂",
+      "charging": "Charging"
+    },
+    "eyebrowWindow": "Window opens",
+    "window": {
+      "meta": "Plug in then — we'll watch the clock.",
+      "notify": "Notify Me"
+    },
+    "notify": {
+      "scheduled": "Scheduled",
+      "denied": "Permission denied",
+      "unsupported": "Not supported",
+      "error": "Error · retry"
+    },
+    "eyebrowForecast": "Forecast",
+    "forecast": {
+      "title": "Hour by hour",
+      "help": "Bar height = spot price · highlighted hours = optimal charging. Hover a bar to inspect.",
+      "aria": "Hourly price forecast bar chart",
+      "barAria": "{{hour}}, {{price}} {{currency}} per kWh, {{co2}} grams CO₂ per kWh{{state}}",
+      "stateCharging": ", charging"
+    },
+    "legend": {
+      "charging": "Charging",
+      "skip": "Skip",
+      "axis": "y · {{currency}}/kWh"
+    },
+    "eyebrowLedger": "Slot Ledger",
+    "ledger": {
+      "title": "Plan in detail",
+      "colTime": "Time",
+      "colState": "State",
+      "colEnergy": "Energy",
+      "colPrice": "Price",
+      "colCo2": "CO₂",
+      "colRelative": "Relative price",
+      "charge": "Charge",
+      "skip": "Skip"
+    },
+    "empty": {
+      "eyebrow": "No data",
+      "title": "No schedule yet.",
+      "sub": "Set your trip on the brief page, then come back.",
+      "back": "Back to Brief"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "timeFormat": {
+      "label": "Time format",
+      "h12": "12-hour (1:30 PM)",
+      "h24": "24-hour (13:30)"
+    },
+    "language": {
+      "label": "Language",
+      "en": "English",
+      "sv": "Svenska",
+      "de": "Deutsch",
+      "es": "Español"
+    },
+    "note": {
+      "datetimePicker": "Note: the departure date/time picker on the home page is controlled by your browser and may keep its own format."
+    }
+  }
+}

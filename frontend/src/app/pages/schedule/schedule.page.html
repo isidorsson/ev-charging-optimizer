@@ -1,11 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/" text="" aria-label="Back to brief"></ion-back-button>
+      <ion-back-button
+        defaultHref="/"
+        text=""
+        [attr.aria-label]="'schedule.ariaBack' | translate"
+      ></ion-back-button>
     </ion-buttons>
     <ion-title>
       <span class="signal-dot" aria-hidden="true"></span>
-      Schedule · Output
+      {{ "schedule.title" | translate }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -16,38 +20,37 @@
       <!-- ========== Header + Hero KPI ========== -->
       <section class="output-hero rise">
         <header class="result-head">
-          <span class="eyebrow"><span class="num">∎</span>&nbsp;Output</span>
-          <h1 class="display result-title">Your charging plan.</h1>
+          <span class="eyebrow"><span class="num">∎</span>&nbsp;{{ "schedule.eyebrowOutput" | translate }}</span>
+          <h1 class="display result-title">{{ "schedule.headline" | translate }}</h1>
           <p class="result-sub">
-            Computed against {{ result()!.schedule.length }} hourly forecast slots.
-            Lower score wins.
+            {{ "schedule.subline" | translate: { count: result()!.schedule.length } }}
           </p>
         </header>
 
-        <div class="hero-kpi" aria-label="Savings summary">
+        <div class="hero-kpi" [attr.aria-label]="'schedule.kpi.savingsAria' | translate">
           <div class="kpi-main">
-            <span class="kpi-pre">Δ vs.&nbsp;plug-in-now</span>
+            <span class="kpi-pre">{{ "schedule.kpi.delta" | translate }}</span>
             <div class="kpi-value display">
               <span class="minus" aria-hidden="true">−</span><span class="kpi-num">{{ (result()!.summary.savingsVsNaive * 100) | number: "1.0-0" }}</span><span class="kpi-pct">%</span>
             </div>
-            <span class="kpi-foot">cheaper · same energy delivered</span>
+            <span class="kpi-foot">{{ "schedule.kpi.cheaper" | translate }}</span>
           </div>
 
           <dl class="kpi-side">
             <div class="kpi-row">
-              <dt>Total cost</dt>
+              <dt>{{ "schedule.kpi.totalCost" | translate }}</dt>
               <dd class="kpi-fig metric">
                 {{ result()!.summary.totalCost | number: "1.2-2" }}<span class="kpi-unit">{{ result()!.summary.currency }}</span>
               </dd>
             </div>
             <div class="kpi-row">
-              <dt>CO₂</dt>
+              <dt>{{ "schedule.kpi.co2" | translate }}</dt>
               <dd class="kpi-fig metric">
                 {{ (result()!.summary.totalCarbonGrams / 1000) | number: "1.1-1" }}<span class="kpi-unit">kg</span>
               </dd>
             </div>
             <div class="kpi-row">
-              <dt>Charging</dt>
+              <dt>{{ "schedule.kpi.charging" | translate }}</dt>
               <dd class="kpi-fig metric">
                 {{ result()!.summary.chargingHours | number: "1.1-1" }}<span class="kpi-unit">h</span>
               </dd>
@@ -59,11 +62,11 @@
       <!-- ========== Window callout ========== -->
       <section class="surface-card window-card rise rise-2">
         <div class="window-prose">
-          <span class="eyebrow"><span class="num">→</span>&nbsp;Window opens</span>
+          <span class="eyebrow"><span class="num">→</span>&nbsp;{{ "schedule.eyebrowWindow" | translate }}</span>
           <p class="window-time display">
-            {{ formatTime(result()!.summary.cheapestWindowStart) }}
+            {{ result()!.summary.cheapestWindowStart | localTime: "dayTime" }}
           </p>
-          <p class="window-meta">Plug in then — we'll watch the clock.</p>
+          <p class="window-meta">{{ "schedule.window.meta" | translate }}</p>
         </div>
 
         <div class="window-action">
@@ -73,7 +76,7 @@
             [disabled]="!result()!.summary.cheapestWindowStart"
           >
             <ion-icon slot="start" name="notifications-outline" aria-hidden="true"></ion-icon>
-            Notify Me
+            {{ "schedule.window.notify" | translate }}
           </ion-button>
 
           <ion-chip
@@ -83,10 +86,10 @@
           >
             <ion-label>
               <ng-container [ngSwitch]="notifyState()">
-                <span *ngSwitchCase="'ok'">Scheduled</span>
-                <span *ngSwitchCase="'denied'">Permission denied</span>
-                <span *ngSwitchCase="'unsupported'">Not supported</span>
-                <span *ngSwitchCase="'error'">Error · retry</span>
+                <span *ngSwitchCase="'ok'">{{ "schedule.notify.scheduled" | translate }}</span>
+                <span *ngSwitchCase="'denied'">{{ "schedule.notify.denied" | translate }}</span>
+                <span *ngSwitchCase="'unsupported'">{{ "schedule.notify.unsupported" | translate }}</span>
+                <span *ngSwitchCase="'error'">{{ "schedule.notify.error" | translate }}</span>
               </ng-container>
             </ion-label>
           </ion-chip>
@@ -96,16 +99,15 @@
       <!-- ========== Chart ========== -->
       <section class="surface-card chart-card rise rise-3">
         <header class="section-head">
-          <span class="eyebrow"><span class="num">02</span>&nbsp;Forecast</span>
-          <h2 class="section-title">Hour by hour</h2>
+          <span class="eyebrow"><span class="num">02</span>&nbsp;{{ "schedule.eyebrowForecast" | translate }}</span>
+          <h2 class="section-title">{{ "schedule.forecast.title" | translate }}</h2>
           <p class="section-help">
-            Bar height = spot price · highlighted hours = optimal charging.
-            Hover a bar to inspect.
+            {{ "schedule.forecast.help" | translate }}
           </p>
         </header>
 
         <div class="bars-wrap">
-          <div class="bars" role="img" aria-label="Hourly price forecast bar chart">
+          <div class="bars" role="img" [attr.aria-label]="'schedule.forecast.aria' | translate">
             <div
               class="bar-col"
               *ngFor="let b of bars(); let i = index"
@@ -117,16 +119,19 @@
               (blur)="hoveredIndex.set(null)"
               tabindex="0"
               [attr.aria-label]="
-                b.hour + ', ' +
-                (b.pricePerKwh | number: '1.2-3') + ' ' + b.currency + ' per kWh, ' +
-                (b.intensityGCo2PerKwh | number: '1.0-0') + ' grams CO2 per kWh' +
-                (b.charging ? ', charging' : '')
+                'schedule.forecast.barAria' | translate: {
+                  hour: (b.startsAt | localTime),
+                  price: (b.pricePerKwh | number: '1.2-3'),
+                  currency: b.currency,
+                  co2: (b.intensityGCo2PerKwh | number: '1.0-0'),
+                  state: b.charging ? ('schedule.forecast.stateCharging' | translate) : ''
+                }
               "
             >
               <div class="bar-track">
                 <div class="bar" [style.height.%]="6 + b.priceRel * 94"></div>
               </div>
-              <span class="hour metric">{{ b.hour }}</span>
+              <span class="hour metric">{{ b.startsAt | localTime }}</span>
             </div>
           </div>
         </div>
@@ -134,14 +139,14 @@
         <footer class="chart-foot">
           <span class="legend-item">
             <span class="dot charging" aria-hidden="true"></span>
-            <span>Charging</span>
+            <span>{{ "schedule.legend.charging" | translate }}</span>
           </span>
           <span class="legend-item">
             <span class="dot resting" aria-hidden="true"></span>
-            <span>Skip</span>
+            <span>{{ "schedule.legend.skip" | translate }}</span>
           </span>
           <span class="legend-axis metric">
-            y · {{ result()!.summary.currency }}/kWh
+            {{ "schedule.legend.axis" | translate: { currency: result()!.summary.currency } }}
           </span>
         </footer>
       </section>
@@ -149,8 +154,8 @@
       <!-- ========== Slot ledger — proper data table on desktop ========== -->
       <section class="surface-card list-card rise rise-4">
         <header class="section-head">
-          <span class="eyebrow"><span class="num">03</span>&nbsp;Slot Ledger</span>
-          <h2 class="section-title">Plan in detail</h2>
+          <span class="eyebrow"><span class="num">03</span>&nbsp;{{ "schedule.eyebrowLedger" | translate }}</span>
+          <h2 class="section-title">{{ "schedule.ledger.title" | translate }}</h2>
         </header>
 
         <!-- Desktop: real table -->
@@ -159,12 +164,12 @@
             <thead>
               <tr>
                 <th scope="col" class="th-state"></th>
-                <th scope="col" class="th-time">Time</th>
-                <th scope="col" class="th-state-text">State</th>
-                <th scope="col" class="th-num">Energy</th>
-                <th scope="col" class="th-num">Price</th>
-                <th scope="col" class="th-num">CO₂</th>
-                <th scope="col" class="th-bar">Relative price</th>
+                <th scope="col" class="th-time">{{ "schedule.ledger.colTime" | translate }}</th>
+                <th scope="col" class="th-state-text">{{ "schedule.ledger.colState" | translate }}</th>
+                <th scope="col" class="th-num">{{ "schedule.ledger.colEnergy" | translate }}</th>
+                <th scope="col" class="th-num">{{ "schedule.ledger.colPrice" | translate }}</th>
+                <th scope="col" class="th-num">{{ "schedule.ledger.colCo2" | translate }}</th>
+                <th scope="col" class="th-bar">{{ "schedule.ledger.colRelative" | translate }}</th>
               </tr>
             </thead>
             <tbody>
@@ -179,11 +184,11 @@
                   <span class="state-pip" aria-hidden="true"></span>
                 </td>
                 <td class="td-time metric">
-                  {{ s.startsAt | date: "EEE HH:mm" }}
+                  {{ s.startsAt | localTime: "dayTime" }}
                 </td>
                 <td class="td-state-text">
                   <span class="state-badge" [class.on]="s.charging">
-                    {{ s.charging ? "Charge" : "Skip" }}
+                    {{ (s.charging ? "schedule.ledger.charge" : "schedule.ledger.skip") | translate }}
                   </span>
                 </td>
                 <td class="td-num metric">
@@ -219,14 +224,14 @@
 
     <ng-template #empty>
       <div class="empty">
-        <span class="eyebrow"><span class="num">∅</span>&nbsp;No data</span>
-        <h2 class="display empty-title">No schedule yet.</h2>
+        <span class="eyebrow"><span class="num">∅</span>&nbsp;{{ "schedule.empty.eyebrow" | translate }}</span>
+        <h2 class="display empty-title">{{ "schedule.empty.title" | translate }}</h2>
         <p class="empty-sub">
-          Set your trip on the brief page, then come back.
+          {{ "schedule.empty.sub" | translate }}
         </p>
         <ion-button (click)="goBack()" fill="outline">
           <ion-icon slot="start" name="arrow-back-outline" aria-hidden="true"></ion-icon>
-          Back to Brief
+          {{ "schedule.empty.back" | translate }}
         </ion-button>
       </div>
     </ng-template>

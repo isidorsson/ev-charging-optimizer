@@ -1,0 +1,166 @@
+{
+  "common": {
+    "back": "Atrás",
+    "loading": "Cargando…"
+  },
+  "home": {
+    "title": "VE · Optimizador de red",
+    "ariaSettings": "Abrir ajustes",
+    "eyebrowBrief": "Resumen",
+    "headline": {
+      "before": "Carga cuando la red esté más",
+      "cheapest": "barata",
+      "and": "y",
+      "cleanest": "limpia",
+      "after": "."
+    },
+    "lede": "La mayoría de las apps de carga programan por reloj. Nosotros programamos por la red — combinando precios spot en tiempo real con la intensidad de carbono para mover la misma carga a la franja correcta.",
+    "stats": {
+      "savingsValue": "20–60",
+      "savingsLabel": "más barato que cargar al instante",
+      "forecastValue": "~24",
+      "forecastLabel": "horizonte de pronóstico",
+      "pwaLabel": "offline + notificaciones push"
+    },
+    "eyebrowVehicle": "Vehículo",
+    "vehicle": {
+      "title": "Tu coche",
+      "batteryCapacity": "Capacidad de batería",
+      "maxChargeRate": "Potencia máx. de carga",
+      "currentCharge": "Carga actual",
+      "targetCharge": "Carga objetivo",
+      "ariaCurrent": "Porcentaje actual de batería",
+      "ariaTarget": "Porcentaje objetivo de batería"
+    },
+    "eyebrowDeparture": "Salida",
+    "departure": {
+      "title": "¿Cuándo te vas?",
+      "time": "Hora de salida",
+      "timeAria": "Fecha y hora de salida",
+      "region": "Zona de precio",
+      "regionAria": "Zona de precio"
+    },
+    "region": {
+      "SE1": "SE1 — Norte",
+      "SE2": "SE2 — Centro-Norte",
+      "SE3": "SE3 — Centro-Sur",
+      "SE4": "SE4 — Sur"
+    },
+    "eyebrowPreview": "Vista previa",
+    "preview": {
+      "title": "Lo que optimizaremos",
+      "energyNeeded": "Energía necesaria",
+      "atMaxRate": "A potencia máx.",
+      "windowAvailable": "Ventana disponible",
+      "feasible": "Tiempo de sobra — elegiremos las horas más baratas.",
+      "tight": "Ventana ajustada — la carga será continua."
+    },
+    "eyebrowPriority": "Prioridad",
+    "priority": {
+      "title": "¿Coste o CO₂?",
+      "help": "Desliza entre coste puro y CO₂ puro. El optimizador reordena cada franja con una puntuación min–max ponderada.",
+      "cost": "Coste",
+      "carbon": "CO₂",
+      "aria": "Peso entre coste y CO₂"
+    },
+    "weight": {
+      "costFirst": "Coste primero",
+      "mostlyCost": "Sobre todo coste, algo más limpio",
+      "balanced": "Equilibrado",
+      "mostlyClean": "Sobre todo limpio, algo más barato",
+      "greenest": "Solo las horas más verdes"
+    },
+    "cta": {
+      "submit": "Buscar mi ventana de carga",
+      "loading": "Calculando precios…",
+      "foot": "APIs públicas de Nord Pool y National Grid · sin registro"
+    },
+    "errors": {
+      "targetBelowCurrent": "La carga objetivo debe ser mayor que la actual.",
+      "departurePast": "La salida debe ser en el futuro.",
+      "optimizeFailed": "No se pudo calcular el plan. Inténtalo de nuevo."
+    },
+    "eta": {
+      "dash": "—",
+      "past": "en el pasado",
+      "lessThanHour": "en menos de una hora",
+      "hours": "en ~{{count}} h",
+      "days": "en ~{{count}} d"
+    }
+  },
+  "schedule": {
+    "ariaBack": "Volver al resumen",
+    "title": "Plan · Resultado",
+    "eyebrowOutput": "Resultado",
+    "headline": "Tu plan de carga.",
+    "subline": "Calculado contra {{count}} franjas horarias del pronóstico. Menor puntuación gana.",
+    "kpi": {
+      "savingsAria": "Resumen de ahorro",
+      "delta": "Δ vs. cargar ahora",
+      "cheaper": "más barato · misma energía entregada",
+      "totalCost": "Coste total",
+      "co2": "CO₂",
+      "charging": "Tiempo de carga"
+    },
+    "eyebrowWindow": "Ventana abre",
+    "window": {
+      "meta": "Enchúfalo entonces — nosotros vigilamos el reloj.",
+      "notify": "Avísame"
+    },
+    "notify": {
+      "scheduled": "Programado",
+      "denied": "Permiso denegado",
+      "unsupported": "No soportado",
+      "error": "Error · reintenta"
+    },
+    "eyebrowForecast": "Pronóstico",
+    "forecast": {
+      "title": "Hora a hora",
+      "help": "Altura de la barra = precio spot · horas resaltadas = carga óptima. Pasa el cursor para inspeccionar.",
+      "aria": "Gráfico de barras de precios horarios",
+      "barAria": "{{hour}}, {{price}} {{currency}} por kWh, {{co2}} gramos de CO₂ por kWh{{state}}",
+      "stateCharging": ", cargando"
+    },
+    "legend": {
+      "charging": "Cargando",
+      "skip": "Saltar",
+      "axis": "y · {{currency}}/kWh"
+    },
+    "eyebrowLedger": "Lista de franjas",
+    "ledger": {
+      "title": "Plan en detalle",
+      "colTime": "Hora",
+      "colState": "Estado",
+      "colEnergy": "Energía",
+      "colPrice": "Precio",
+      "colCo2": "CO₂",
+      "colRelative": "Precio relativo",
+      "charge": "Cargar",
+      "skip": "Saltar"
+    },
+    "empty": {
+      "eyebrow": "Sin datos",
+      "title": "Aún no hay plan.",
+      "sub": "Configura tu viaje en la página de resumen y vuelve.",
+      "back": "Volver al resumen"
+    }
+  },
+  "settings": {
+    "title": "Ajustes",
+    "timeFormat": {
+      "label": "Formato de hora",
+      "h12": "12 horas (1:30 PM)",
+      "h24": "24 horas (13:30)"
+    },
+    "language": {
+      "label": "Idioma",
+      "en": "English",
+      "sv": "Svenska",
+      "de": "Deutsch",
+      "es": "Español"
+    },
+    "note": {
+      "datetimePicker": "Nota: el selector de fecha/hora de salida en la página principal lo controla el navegador y puede usar su propio formato."
+    }
+  }
+}

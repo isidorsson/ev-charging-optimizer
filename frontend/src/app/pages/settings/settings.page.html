@@ -1,0 +1,64 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/"
+        [text]="'common.back' | translate"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ "settings.title" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="page settings-page">
+    <ion-list inset="true">
+      <ion-list-header>
+        <ion-label>{{ "settings.timeFormat.label" | translate }}</ion-label>
+      </ion-list-header>
+
+      <ion-item>
+        <ion-label>{{ "settings.timeFormat.label" | translate }}</ion-label>
+        <ion-select
+          interface="popover"
+          [value]="prefs.timeFormat()"
+          (ionChange)="onTimeFormatChange($any($event.detail.value))"
+          [attr.aria-label]="'settings.timeFormat.label' | translate"
+        >
+          <ion-select-option value="12h">
+            {{ "settings.timeFormat.h12" | translate }}
+          </ion-select-option>
+          <ion-select-option value="24h">
+            {{ "settings.timeFormat.h24" | translate }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-list inset="true">
+      <ion-list-header>
+        <ion-label>{{ "settings.language.label" | translate }}</ion-label>
+      </ion-list-header>
+
+      <ion-item>
+        <ion-label>{{ "settings.language.label" | translate }}</ion-label>
+        <ion-select
+          interface="popover"
+          [value]="prefs.language()"
+          (ionChange)="onLanguageChange($any($event.detail.value))"
+          [attr.aria-label]="'settings.language.label' | translate"
+        >
+          <ion-select-option *ngFor="let lang of languages" [value]="lang">
+            {{ "settings.language." + lang | translate }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <p class="settings-note">
+      <ion-note>
+        {{ "settings.note.datetimePicker" | translate }}
+      </ion-note>
+    </p>
+  </div>
+</ion-content>

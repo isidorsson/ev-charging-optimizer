@@ -11,5 +11,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import("./pages/schedule/schedule.page").then((m) => m.SchedulePage),
   },
+  {
+    path: "settings",
+    loadComponent: () =>
+      import("./pages/settings/settings.page").then((m) => m.SettingsPage),
+  },
   { path: "**", redirectTo: "" },
 ];

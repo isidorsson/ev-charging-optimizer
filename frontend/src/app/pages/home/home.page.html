@@ -2,8 +2,16 @@
   <ion-toolbar>
     <ion-title>
       <span class="signal-dot" aria-hidden="true"></span>
-      EV · Grid Optimizer
+      {{ "home.title" | translate }}
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        (click)="goToSettings()"
+        [attr.aria-label]="'home.ariaSettings' | translate"
+      >
+        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -12,34 +20,34 @@
     <!-- ========== HERO ========== -->
     <section class="hero rise">
       <div class="hero-text">
-        <span class="eyebrow"><span class="num">01</span>&nbsp;Brief</span>
+        <span class="eyebrow"><span class="num">01</span>&nbsp;{{ "home.eyebrowBrief" | translate }}</span>
 
         <h1 class="display headline">
-          Charge when the grid is <span class="hl">cheapest</span> &amp;
-          <span class="hl">cleanest</span>.
+          {{ "home.headline.before" | translate }}
+          <span class="hl">{{ "home.headline.cheapest" | translate }}</span>
+          {{ "home.headline.and" | translate }}
+          <span class="hl">{{ "home.headline.cleanest" | translate }}</span>{{ "home.headline.after" | translate }}
         </h1>
 
         <p class="lede">
-          Most charging apps schedule by the clock. We schedule by the
-          <em>grid</em> — blending live spot prices with carbon intensity
-          to shift the same charge into the right window.
+          {{ "home.lede" | translate }}
         </p>
       </div>
 
       <aside class="hero-stats" aria-label="Key results at a glance">
         <div class="stat">
-          <span class="stat-num display">20–60<span class="unit">%</span></span>
-          <span class="stat-label">cheaper vs.&nbsp;plug-in-now</span>
+          <span class="stat-num display">{{ "home.stats.savingsValue" | translate }}<span class="unit">%</span></span>
+          <span class="stat-label">{{ "home.stats.savingsLabel" | translate }}</span>
         </div>
         <hr aria-hidden="true" />
         <div class="stat">
-          <span class="stat-num display">~24<span class="unit">h</span></span>
-          <span class="stat-label">forecast horizon</span>
+          <span class="stat-num display">{{ "home.stats.forecastValue" | translate }}<span class="unit">h</span></span>
+          <span class="stat-label">{{ "home.stats.forecastLabel" | translate }}</span>
         </div>
         <hr aria-hidden="true" />
         <div class="stat">
           <span class="stat-num display">PWA</span>
-          <span class="stat-label">offline + push notifications</span>
+          <span class="stat-label">{{ "home.stats.pwaLabel" | translate }}</span>
         </div>
       </aside>
     </section>
@@ -49,14 +57,14 @@
       <!-- 02 — Vehicle -->
       <section class="surface-card vehicle-card rise rise-2">
         <header class="section-head">
-          <span class="eyebrow"><span class="num">02</span>&nbsp;Vehicle</span>
-          <h2 class="section-title">Your car</h2>
+          <span class="eyebrow"><span class="num">02</span>&nbsp;{{ "home.eyebrowVehicle" | translate }}</span>
+          <h2 class="section-title">{{ "home.vehicle.title" | translate }}</h2>
         </header>
 
         <div class="vehicle-grid">
           <div class="field">
             <ion-item lines="none">
-              <ion-label position="stacked">Battery capacity</ion-label>
+              <ion-label position="stacked">{{ "home.vehicle.batteryCapacity" | translate }}</ion-label>
               <ion-input
                 type="number"
                 inputmode="decimal"
@@ -74,7 +82,7 @@
 
           <div class="field">
             <ion-item lines="none">
-              <ion-label position="stacked">Max charge rate</ion-label>
+              <ion-label position="stacked">{{ "home.vehicle.maxChargeRate" | translate }}</ion-label>
               <ion-input
                 type="number"
                 inputmode="decimal"
@@ -92,7 +100,7 @@
 
           <div class="field range-field">
             <div class="range-label">
-              <label for="soc-current">Current charge</label>
+              <label for="soc-current">{{ "home.vehicle.currentCharge" | translate }}</label>
               <span class="value-tag metric">{{ form().currentSoc }}%</span>
             </div>
             <ion-range
@@ -102,13 +110,13 @@
               step="1"
               [value]="form().currentSoc"
               (ionInput)="patch('currentSoc', +$any($event.target).value)"
-              aria-label="Current battery charge percentage"
+              [attr.aria-label]="'home.vehicle.ariaCurrent' | translate"
             ></ion-range>
           </div>
 
           <div class="field range-field">
             <div class="range-label">
-              <label for="soc-target">Target charge</label>
+              <label for="soc-target">{{ "home.vehicle.targetCharge" | translate }}</label>
               <span class="value-tag metric">{{ form().targetSoc }}%</span>
             </div>
             <ion-range
@@ -118,7 +126,7 @@
               step="1"
               [value]="form().targetSoc"
               (ionInput)="patch('targetSoc', +$any($event.target).value)"
-              aria-label="Target battery charge percentage"
+              [attr.aria-label]="'home.vehicle.ariaTarget' | translate"
             ></ion-range>
           </div>
         </div>
@@ -127,43 +135,43 @@
       <!-- 03 — Departure -->
       <section class="surface-card departure-card rise rise-3">
         <header class="section-head">
-          <span class="eyebrow"><span class="num">03</span>&nbsp;Departure</span>
-          <h2 class="section-title">When are you leaving?</h2>
+          <span class="eyebrow"><span class="num">03</span>&nbsp;{{ "home.eyebrowDeparture" | translate }}</span>
+          <h2 class="section-title">{{ "home.departure.title" | translate }}</h2>
         </header>
 
         <div class="row-gap">
           <div class="field">
             <ion-item lines="none">
-              <ion-label position="stacked">Departure time</ion-label>
+              <ion-label position="stacked">{{ "home.departure.time" | translate }}</ion-label>
               <ion-input
                 type="datetime-local"
                 name="departureTime"
                 autocomplete="off"
                 [value]="form().departureTime"
                 (ionInput)="patch('departureTime', $any($event.target).value)"
-                aria-label="Departure date and time"
+                [attr.aria-label]="'home.departure.timeAria' | translate"
               ></ion-input>
             </ion-item>
             <p class="field-help metric" aria-live="polite">
-              {{ departureLabel() }}
+              {{ departureLabelKey() | translate: { count: departureCount() } }}
             </p>
             <div class="field-underline"></div>
           </div>
 
           <div class="field">
             <ion-item lines="none">
-              <ion-label position="stacked">Price region</ion-label>
+              <ion-label position="stacked">{{ "home.departure.region" | translate }}</ion-label>
               <ion-select
                 name="region"
                 [value]="form().region"
                 interface="popover"
                 (ionChange)="patch('region', $any($event.target).value)"
-                aria-label="Price region"
+                [attr.aria-label]="'home.departure.regionAria' | translate"
               >
-                <ion-select-option value="SE1">SE1 — North</ion-select-option>
-                <ion-select-option value="SE2">SE2 — North-Central</ion-select-option>
-                <ion-select-option value="SE3">SE3 — South-Central</ion-select-option>
-                <ion-select-option value="SE4">SE4 — South</ion-select-option>
+                <ion-select-option value="SE1">{{ "home.region.SE1" | translate }}</ion-select-option>
+                <ion-select-option value="SE2">{{ "home.region.SE2" | translate }}</ion-select-option>
+                <ion-select-option value="SE3">{{ "home.region.SE3" | translate }}</ion-select-option>
+                <ion-select-option value="SE4">{{ "home.region.SE4" | translate }}</ion-select-option>
               </ion-select>
             </ion-item>
             <div class="field-underline"></div>
@@ -174,25 +182,25 @@
       <!-- 04 — Live preview -->
       <aside class="surface-card preview-card rise rise-4" aria-live="polite">
         <header class="section-head">
-          <span class="eyebrow"><span class="num">∎</span>&nbsp;Preview</span>
-          <h2 class="section-title">What we'll optimize</h2>
+          <span class="eyebrow"><span class="num">∎</span>&nbsp;{{ "home.eyebrowPreview" | translate }}</span>
+          <h2 class="section-title">{{ "home.preview.title" | translate }}</h2>
         </header>
 
         <div class="preview-grid">
           <div class="preview-stat">
-            <span class="preview-label">Energy needed</span>
+            <span class="preview-label">{{ "home.preview.energyNeeded" | translate }}</span>
             <span class="preview-num display">
               {{ preview().energyKwh | number: "1.1-1" }}<span class="preview-unit">kWh</span>
             </span>
           </div>
           <div class="preview-stat">
-            <span class="preview-label">At max rate</span>
+            <span class="preview-label">{{ "home.preview.atMaxRate" | translate }}</span>
             <span class="preview-num display">
               {{ preview().hoursAtMaxRate | number: "1.1-1" }}<span class="preview-unit">h</span>
             </span>
           </div>
           <div class="preview-stat">
-            <span class="preview-label">Window available</span>
+            <span class="preview-label">{{ "home.preview.windowAvailable" | translate }}</span>
             <span class="preview-num display">
               {{ preview().windowHours | number: "1.0-1" }}<span class="preview-unit">h</span>
             </span>
@@ -205,10 +213,10 @@
         >
           <span class="signal-dot" aria-hidden="true"></span>
           <span *ngIf="preview().feasible">
-            Plenty of time — we'll cherry-pick the cheapest hours.
+            {{ "home.preview.feasible" | translate }}
           </span>
           <span *ngIf="!preview().feasible">
-            Tight window — charging will run continuously.
+            {{ "home.preview.tight" | translate }}
           </span>
         </p>
       </aside>
@@ -216,23 +224,22 @@
       <!-- 05 — Priority slider -->
       <section class="surface-card priority-card rise rise-5">
         <header class="section-head">
-          <span class="eyebrow"><span class="num">04</span>&nbsp;Priority</span>
-          <h2 class="section-title">Cost or carbon?</h2>
+          <span class="eyebrow"><span class="num">04</span>&nbsp;{{ "home.eyebrowPriority" | translate }}</span>
+          <h2 class="section-title">{{ "home.priority.title" | translate }}</h2>
         </header>
 
         <p class="subtle priority-help">
-          Slide between cost-only and carbon-only. The optimizer re-ranks every
-          forecast slot using a weighted min–max score.
+          {{ "home.priority.help" | translate }}
         </p>
 
         <div class="weight-track">
           <div class="weight-anchors">
             <span class="anchor-text" id="anchor-cost">
               <ion-icon name="cash-outline" aria-hidden="true"></ion-icon>
-              Cost
+              {{ "home.priority.cost" | translate }}
             </span>
             <span class="anchor-text right" id="anchor-carbon">
-              Carbon
+              {{ "home.priority.carbon" | translate }}
               <ion-icon name="leaf-outline" aria-hidden="true"></ion-icon>
             </span>
           </div>
@@ -243,7 +250,7 @@
             step="0.05"
             [value]="form().carbonWeight"
             (ionInput)="patch('carbonWeight', +$any($event.target).value)"
-            aria-label="Cost vs carbon priority weight"
+            [attr.aria-label]="'home.priority.aria' | translate"
             aria-describedby="anchor-cost anchor-carbon"
           ></ion-range>
         </div>
@@ -252,7 +259,7 @@
           <span class="weight-num metric">
             w = {{ form().carbonWeight | number: "1.2-2" }}
           </span>
-          <span class="weight-text">{{ weightLabel() }}</span>
+          <span class="weight-text">{{ weightLabelKey() | translate }}</span>
         </div>
       </section>
 
@@ -265,17 +272,17 @@
           aria-live="assertive"
         >
           <ion-icon name="alert-circle-outline" aria-hidden="true"></ion-icon>
-          <span>{{ error() }}</span>
+          <span>{{ error()! | translate }}</span>
         </p>
 
         <ion-button type="submit" expand="block" [disabled]="loading()">
           <ion-spinner *ngIf="loading()" name="crescent" slot="start"></ion-spinner>
-          <span *ngIf="!loading()">Find My Charging Window</span>
-          <span *ngIf="loading()">Crunching prices…</span>
+          <span *ngIf="!loading()">{{ "home.cta.submit" | translate }}</span>
+          <span *ngIf="loading()">{{ "home.cta.loading" | translate }}</span>
         </ion-button>
 
         <p class="cta-foot">
-          Public Nord Pool + National Grid APIs · no signup
+          {{ "home.cta.foot" | translate }}
         </p>
       </div>
     </form>
