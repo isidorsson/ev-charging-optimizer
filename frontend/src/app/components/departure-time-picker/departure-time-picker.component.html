@@ -23,22 +23,17 @@
   </svg>
 </button>
 
-<div
-  *ngIf="open()"
-  class="picker-backdrop"
-  aria-hidden="true"
-  (click)="closeWithoutSaving()"
-></div>
-
-<div
-  *ngIf="open()"
-  class="picker-panel"
-  role="dialog"
-  aria-modal="true"
+<dialog
+  #dialog
+  class="picker-dialog"
   [attr.aria-label]="'home.departure.picker.openLabel' | translate"
   [style.top.px]="panelPos()?.top"
   [style.left.px]="panelPos()?.left"
+  (click)="onDialogClick($event)"
+  (close)="onDialogClose()"
+  (cancel)="onDialogClose()"
 >
+  <div class="picker-panel">
   <!-- Quick chips -->
   <div class="chips" role="group" aria-label="Quick presets">
     <button
@@ -172,4 +167,5 @@
       {{ "home.departure.picker.ok" | translate }}
     </button>
   </div>
-</div>
+  </div>
+</dialog>

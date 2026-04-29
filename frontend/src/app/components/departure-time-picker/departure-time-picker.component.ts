@@ -130,6 +130,7 @@ export class DepartureTimePickerComponent {
   readonly panelPos = signal<{ top: number; left: number } | null>(null);
 
   private readonly triggerRef = viewChild<ElementRef<HTMLButtonElement>>("trigger");
+  private readonly dialogRef = viewChild<ElementRef<HTMLDialogElement>>("dialog");
 
   readonly localeTag = computed(() => toLocaleTag(this.prefs.language()));
   readonly is12h = computed<boolean>(() => this.prefs.timeFormat() === "12h");
@@ -241,6 +242,46 @@ export class DepartureTimePickerComponent {
         });
       }
     });
+
+    /*
+     * Bridge: signal `open()` ↔ native <dialog> imperative API.
+     *
+     * Native <dialog> is imperative: showModal() / close(). The component
+     * keeps `open` as the source of truth (signal), so this effect must
+     * mirror it onto the element. Two pitfalls to avoid:
+     *
+     *   1. showModal() throws InvalidStateError if the dialog is already
+     *      open — guard with `dialog.open`.
+     *   2. close() fires the `close` event, which we use to flip `open`
+     *      back to false. If we don't guard symmetrically, calling close()
+     *      on an already-closed dialog is a no-op but still fine.
+     *
+     * TODO (you write): read both `dialogRef()` (a viewChild signal) and
+     * `open()` here, then sync the dialog. ~6 lines.
+     */
+    effect(() => {
+      // Your code here.
+    });
+  }
+
+  /**
+   * Native <dialog> emits `close` on Escape, on form[method="dialog"]
+   * submission, and when we call .close() ourselves. We mirror that into
+   * the signal so the component state stays consistent regardless of
+   * how the dialog was dismissed.
+   */
+  onDialogClose(): void {
+    if (this.open()) this.closeWithoutSaving();
+  }
+
+  /**
+   * A click on the <dialog> element itself (not on a child) means the
+   * user clicked the ::backdrop. Treat that as "cancel".
+   */
+  onDialogClick(event: MouseEvent): void {
+    if (event.target === this.dialogRef()?.nativeElement) {
+      this.closeWithoutSaving();
+    }
   }
 
   toggleOpen(): void {
