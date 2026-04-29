@@ -140,18 +140,12 @@
         </header>
 
         <div class="row-gap">
-          <div class="field">
-            <ion-item lines="none">
-              <ion-label position="stacked">{{ "home.departure.time" | translate }}</ion-label>
-              <ion-input
-                type="datetime-local"
-                name="departureTime"
-                autocomplete="off"
-                [value]="form().departureTime"
-                (ionInput)="patch('departureTime', $any($event.target).value)"
-                [attr.aria-label]="'home.departure.timeAria' | translate"
-              ></ion-input>
-            </ion-item>
+          <div class="field departure-time-field">
+            <label class="picker-field-label">{{ "home.departure.time" | translate }}</label>
+            <app-departure-time-picker
+              [value]="form().departureTime"
+              (valueChange)="patch('departureTime', $event)"
+            ></app-departure-time-picker>
             <p class="field-help metric" aria-live="polite">
               {{ departureLabelKey() | translate: { count: departureCount() } }}
             </p>

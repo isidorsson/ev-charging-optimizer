@@ -1,8 +1,6 @@
 .settings-page {
-  padding-top: 8px;
-
   ion-list {
-    margin-top: 16px;
+    margin-top: 24px;
   }
 
   ion-list-header ion-label {
@@ -13,11 +11,9 @@
   }
 
   .settings-note {
-    margin: 24px 16px;
+    margin: 24px 16px 0;
+    font-size: 0.85rem;
     line-height: 1.45;
-
-    ion-note {
-      font-size: 0.85rem;
-    }
+    opacity: 0.7;
   }
 }

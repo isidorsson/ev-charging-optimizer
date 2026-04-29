@@ -1,0 +1,175 @@
+<button
+  #trigger
+  type="button"
+  class="picker-trigger"
+  [attr.aria-haspopup]="'dialog'"
+  [attr.aria-expanded]="open()"
+  [attr.aria-label]="'home.departure.picker.openLabel' | translate"
+  (click)="toggleOpen()"
+>
+  <span class="trigger-value metric">{{ triggerLabel() }}</span>
+  <svg
+    class="trigger-icon"
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <rect x="3" y="4" width="18" height="18" rx="2" />
+    <path d="M16 2v4M8 2v4M3 10h18" />
+  </svg>
+</button>
+
+<div
+  *ngIf="open()"
+  class="picker-backdrop"
+  aria-hidden="true"
+  (click)="closeWithoutSaving()"
+></div>
+
+<div
+  *ngIf="open()"
+  class="picker-panel"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-label]="'home.departure.picker.openLabel' | translate"
+  [style.top.px]="panelPos()?.top"
+  [style.left.px]="panelPos()?.left"
+>
+  <!-- Quick chips -->
+  <div class="chips" role="group" aria-label="Quick presets">
+    <button
+      type="button"
+      class="chip"
+      (click)="applyChip('in8h')"
+    >
+      {{ "home.departure.picker.chip.in8h" | translate }}
+    </button>
+    <button
+      type="button"
+      class="chip"
+      (click)="applyChip('tomorrowMorning')"
+    >
+      {{ "home.departure.picker.chip.tomorrowMorning" | translate }}
+    </button>
+    <button
+      type="button"
+      class="chip"
+      (click)="applyChip('tomorrowEvening')"
+    >
+      {{ "home.departure.picker.chip.tomorrowEvening" | translate }}
+    </button>
+  </div>
+
+  <!-- Calendar -->
+  <div class="calendar">
+    <div class="cal-head">
+      <button
+        type="button"
+        class="cal-nav"
+        [attr.aria-label]="'home.departure.picker.prevMonth' | translate"
+        (click)="prevMonth()"
+      >‹</button>
+      <span class="cal-month" aria-live="polite">{{ monthLabel() }}</span>
+      <button
+        type="button"
+        class="cal-nav"
+        [attr.aria-label]="'home.departure.picker.nextMonth' | translate"
+        (click)="nextMonth()"
+      >›</button>
+    </div>
+
+    <div class="cal-weekdays" role="row">
+      <span
+        *ngFor="let w of weekdayHeader()"
+        role="columnheader"
+        [attr.aria-label]="w.aria"
+        class="cal-weekday"
+      >{{ w.short }}</span>
+    </div>
+
+    <div class="cal-grid" role="grid">
+      <button
+        *ngFor="let cell of monthGrid(); trackBy: trackCell"
+        type="button"
+        role="gridcell"
+        class="cal-day metric"
+        [class.in-month]="cell.inMonth"
+        [class.out-month]="!cell.inMonth"
+        [class.today]="cell.isToday"
+        [class.selected]="cell.isSelected"
+        [class.disabled]="cell.isDisabled"
+        [attr.aria-label]="cell.ariaLabel"
+        [attr.aria-selected]="cell.isSelected"
+        [attr.aria-disabled]="cell.isDisabled"
+        [disabled]="cell.isDisabled"
+        (click)="selectDay(cell)"
+      >{{ cell.label }}</button>
+    </div>
+  </div>
+
+  <!-- Time row -->
+  <div class="time-row">
+    <label class="time-field">
+      <span class="time-label">{{ "home.departure.picker.hour" | translate }}</span>
+      <input
+        type="number"
+        class="time-input metric"
+        [min]="hourBounds().min"
+        [max]="hourBounds().max"
+        step="1"
+        inputmode="numeric"
+        [value]="displayHour().toString().padStart(2, '0')"
+        (change)="setHour($any($event.target).value)"
+        (blur)="setHour($any($event.target).value)"
+        [attr.aria-label]="'home.departure.picker.hour' | translate"
+      />
+    </label>
+
+    <span class="time-sep" aria-hidden="true">:</span>
+
+    <label class="time-field">
+      <span class="time-label">{{ "home.departure.picker.minute" | translate }}</span>
+      <input
+        type="number"
+        class="time-input metric"
+        min="0"
+        max="59"
+        step="1"
+        inputmode="numeric"
+        [value]="draft().minute.toString().padStart(2, '0')"
+        (change)="setMinute($any($event.target).value)"
+        (blur)="setMinute($any($event.target).value)"
+        [attr.aria-label]="'home.departure.picker.minute' | translate"
+      />
+    </label>
+
+    <div *ngIf="is12h()" class="meridiem" role="group" aria-label="AM or PM">
+      <button
+        type="button"
+        class="mer-btn"
+        [class.active]="meridiem() === 'AM'"
+        (click)="setMeridiem('AM')"
+      >{{ "home.departure.picker.amLabel" | translate }}</button>
+      <button
+        type="button"
+        class="mer-btn"
+        [class.active]="meridiem() === 'PM'"
+        (click)="setMeridiem('PM')"
+      >{{ "home.departure.picker.pmLabel" | translate }}</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <button type="button" class="btn btn-ghost" (click)="closeWithoutSaving()">
+      {{ "home.departure.picker.cancel" | translate }}
+    </button>
+    <button type="button" class="btn btn-primary" (click)="commit()">
+      {{ "home.departure.picker.ok" | translate }}
+    </button>
+  </div>
+</div>

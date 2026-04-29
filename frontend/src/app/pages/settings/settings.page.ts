@@ -13,7 +13,6 @@ import {
   IonLabel,
   IonSelect,
   IonSelectOption,
-  IonNote,
 } from "@ionic/angular/standalone";
 import { TranslatePipe } from "@ngx-translate/core";
 
@@ -43,7 +42,6 @@ import {
     IonLabel,
     IonSelect,
     IonSelectOption,
-    IonNote,
   ],
   templateUrl: "./settings.page.html",
   styleUrl: "./settings.page.scss",

@@ -28,6 +28,7 @@ import { TranslatePipe } from "@ngx-translate/core";
 
 import { ApiService, type OptimizeRequest } from "../../services/api.service";
 import { ScheduleStoreService } from "../../services/schedule-store.service";
+import { DepartureTimePickerComponent } from "../../components/departure-time-picker/departure-time-picker.component";
 
 interface FormState {
   batteryKwh: number;
@@ -72,6 +73,7 @@ function defaultDeparture(): string {
     LucideBanknote,
     LucideLeaf,
     LucideCircleAlert,
+    DepartureTimePickerComponent,
   ],
   templateUrl: "./home.page.html",
   styleUrl: "./home.page.scss",

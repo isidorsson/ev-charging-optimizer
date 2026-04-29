@@ -38,7 +38,23 @@
       "time": "Hora de salida",
       "timeAria": "Fecha y hora de salida",
       "region": "Zona de precio",
-      "regionAria": "Zona de precio"
+      "regionAria": "Zona de precio",
+      "picker": {
+        "openLabel": "Elegir hora de salida",
+        "ok": "OK",
+        "cancel": "Cancelar",
+        "prevMonth": "Mes anterior",
+        "nextMonth": "Mes siguiente",
+        "hour": "Hora",
+        "minute": "Minuto",
+        "amLabel": "AM",
+        "pmLabel": "PM",
+        "chip": {
+          "in8h": "En 8 h",
+          "tomorrowMorning": "Mañana 07:00",
+          "tomorrowEvening": "Mañana 17:00"
+        }
+      }
     },
     "region": {
       "SE1": "SE1 — Norte",
@@ -158,9 +174,6 @@
       "sv": "Svenska",
       "de": "Deutsch",
       "es": "Español"
-    },
-    "note": {
-      "datetimePicker": "Nota: el selector de fecha/hora de salida en la página principal lo controla el navegador y puede usar su propio formato."
     }
   }
 }

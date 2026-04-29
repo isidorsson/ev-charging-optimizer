@@ -38,7 +38,23 @@
       "time": "Avresetid",
       "timeAria": "Datum och tid för avresa",
       "region": "Prisregion",
-      "regionAria": "Prisregion"
+      "regionAria": "Prisregion",
+      "picker": {
+        "openLabel": "Välj avresetid",
+        "ok": "OK",
+        "cancel": "Avbryt",
+        "prevMonth": "Föregående månad",
+        "nextMonth": "Nästa månad",
+        "hour": "Timme",
+        "minute": "Minut",
+        "amLabel": "FM",
+        "pmLabel": "EM",
+        "chip": {
+          "in8h": "Om 8 h",
+          "tomorrowMorning": "Imorgon 07:00",
+          "tomorrowEvening": "Imorgon 17:00"
+        }
+      }
     },
     "region": {
       "SE1": "SE1 — Norra",
@@ -158,9 +174,6 @@
       "sv": "Svenska",
       "de": "Deutsch",
       "es": "Español"
-    },
-    "note": {
-      "datetimePicker": "Obs: avresetidens väljare på startsidan styrs av din webbläsare och kan ha sitt eget format."
     }
   }
 }

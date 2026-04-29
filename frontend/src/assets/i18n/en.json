@@ -38,7 +38,23 @@
       "time": "Departure time",
       "timeAria": "Departure date and time",
       "region": "Price region",
-      "regionAria": "Price region"
+      "regionAria": "Price region",
+      "picker": {
+        "openLabel": "Choose departure time",
+        "ok": "OK",
+        "cancel": "Cancel",
+        "prevMonth": "Previous month",
+        "nextMonth": "Next month",
+        "hour": "Hour",
+        "minute": "Minute",
+        "amLabel": "AM",
+        "pmLabel": "PM",
+        "chip": {
+          "in8h": "In 8 h",
+          "tomorrowMorning": "Tomorrow 07:00",
+          "tomorrowEvening": "Tomorrow 17:00"
+        }
+      }
     },
     "region": {
       "SE1": "SE1 — North",
@@ -158,9 +174,6 @@
       "sv": "Svenska",
       "de": "Deutsch",
       "es": "Español"
-    },
-    "note": {
-      "datetimePicker": "Note: the departure date/time picker on the home page is controlled by your browser and may keep its own format."
     }
   }
 }

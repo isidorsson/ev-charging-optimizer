@@ -274,6 +274,23 @@
   font-weight: 500;
 }
 
+.departure-time-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.picker-field-label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--app-text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
 /* ============================================================
    Preview card — live feedback
    No tinted gradient — relies on a single accent rule at the

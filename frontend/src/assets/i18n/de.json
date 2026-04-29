@@ -38,7 +38,23 @@
       "time": "Abfahrtszeit",
       "timeAria": "Abfahrtsdatum und -zeit",
       "region": "Preiszone",
-      "regionAria": "Preiszone"
+      "regionAria": "Preiszone",
+      "picker": {
+        "openLabel": "Abfahrtszeit wählen",
+        "ok": "OK",
+        "cancel": "Abbrechen",
+        "prevMonth": "Vorheriger Monat",
+        "nextMonth": "Nächster Monat",
+        "hour": "Stunde",
+        "minute": "Minute",
+        "amLabel": "AM",
+        "pmLabel": "PM",
+        "chip": {
+          "in8h": "In 8 h",
+          "tomorrowMorning": "Morgen 07:00",
+          "tomorrowEvening": "Morgen 17:00"
+        }
+      }
     },
     "region": {
       "SE1": "SE1 — Nord",
@@ -158,9 +174,6 @@
       "sv": "Svenska",
       "de": "Deutsch",
       "es": "Español"
-    },
-    "note": {
-      "datetimePicker": "Hinweis: Der Datums-/Zeit-Picker für die Abfahrt auf der Startseite wird vom Browser gesteuert und kann ein eigenes Format verwenden."
     }
   }
 }
