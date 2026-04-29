@@ -1,38 +1,463 @@
-html, body {
+/* ============================================================
+   EV Charging Optimizer — Global Styles
+   Corporate refresh. Restrained motion. Stable layout.
+   Mobile-first, desktop-aware.
+   ============================================================ */
+
+html {
+  font-size: 16px;
+  /* Allow OS to drive light/dark; tokens swap via @media prefers-color-scheme */
+  color-scheme: light dark;
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 16px; /* keep 16 — corporate UIs don't scale up density */
+  }
+}
+
+html,
+body {
   height: 100%;
   margin: 0;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.55;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background: var(--app-bg-deep);
+  color: var(--app-text-body);
 }
 
+/* ----------------------------------------------------------
+   Scrollbar gutter — prevents slider/range from shifting layout
+   when content height briefly drops below viewport height.
+   This is the fix for "scrollbar appears/disappears while
+   dragging the range".
+   ---------------------------------------------------------- */
+html,
+body {
+  scrollbar-gutter: stable;
+}
+
+/* Tap behavior — neutralised, no neon */
+* {
+  -webkit-tap-highlight-color: rgba(11, 17, 24, 0.06);
+}
+
+button,
+a,
+ion-button,
+ion-item,
+ion-range,
+ion-input,
+ion-select {
+  touch-action: manipulation;
+}
+
+/* Focus rings — subtle, accent-aware, only for keyboard */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+/* ============================================================
+   Page chrome — toolbar / header
+   ============================================================ */
 ion-content {
-  --background: linear-gradient(180deg, var(--app-bg-deep) 0%, var(--app-bg-surface) 100%);
+  --background: var(--app-bg-deep);
+  --color: var(--app-text-body);
+
+  /* Reserve scrollbar space at the content level too — covers
+     the case where Ionic owns the scroll instead of the body. */
+  &::part(scroll) {
+    scrollbar-gutter: stable;
+    background: var(--app-bg-deep);
+  }
 }
 
-@media (prefers-color-scheme: light) {
-  ion-content {
-    --background: linear-gradient(180deg, #f1f5f9 0%, #ffffff 100%);
+ion-toolbar {
+  --background: rgba(244, 243, 238, 0.84);
+  --border-color: var(--app-divider);
+  --color: var(--app-text-strong);
+  --min-height: 56px;
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-toolbar {
+    --background: rgba(14, 18, 24, 0.82);
+  }
+}
+
+ion-header {
+  border-bottom: 1px solid var(--app-divider);
+}
+
+ion-header::after {
+  display: none !important;
+}
+
+ion-title {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--app-text-muted);
+  padding-inline: 16px;
+
+  @media (min-width: 1024px) {
+    padding-inline: 32px;
+  }
+}
+
+ion-back-button {
+  --color: var(--app-text-body);
+  --icon-font-size: 22px;
+  --padding-start: 8px;
+  --padding-end: 8px;
+
+  &:hover {
+    --color: var(--brand-accent);
+  }
+}
+
+/* ============================================================
+   Typography utilities
+   ============================================================ */
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--app-text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  .num {
+    color: var(--app-text-strong);
+    font-weight: 700;
+  }
+
+  &::before {
+    content: "";
+    width: 16px;
+    height: 1px;
+    background: var(--app-divider-strong);
   }
 }
 
 .subtle {
   color: var(--app-text-muted);
-  font-size: 0.85rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
 }
 
 .metric {
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
-  font-weight: 600;
+  font-feature-settings: "tnum", "zero";
+  font-weight: 500;
+  letter-spacing: -0.005em;
 }
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.022em;
+  color: var(--app-text-strong);
+  text-wrap: balance;
+}
+
+/* ============================================================
+   Surfaces — paper card with hairline border
+   ============================================================ */
 
 .surface-card {
   background: var(--app-bg-card);
   border: 1px solid var(--app-divider);
-  border-radius: 14px;
-  padding: 16px;
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (min-width: 1024px) {
+  .surface-card {
+    padding: 26px 28px;
+    border-radius: var(--radius-xl);
+  }
+
+  .surface-card:hover {
+    border-color: var(--app-divider-strong);
+    box-shadow: var(--shadow-md);
+  }
 }
 
 .row-gap {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
+}
+
+/* ============================================================
+   Forms — flat, line-underlined, dense on desktop
+   ============================================================ */
+
+ion-item {
+  --background: transparent;
+  --background-hover: rgba(11, 17, 24, 0.025);
+  --inner-padding-end: 0;
+  --padding-start: 0;
+  --min-height: 44px;
+  --color: var(--app-text-body);
+}
+
+ion-label {
+  font-family: var(--font-body) !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: var(--app-text-muted) !important;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin-bottom: 8px !important;
+  white-space: normal !important;
+}
+
+ion-input,
+ion-select {
+  --background: transparent;
+  --color: var(--app-text-strong);
+  --padding-start: 0 !important;
+  --padding-end: 0 !important;
+  --placeholder-color: var(--app-text-faint);
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  min-height: 36px;
+
+  &::part(native) {
+    padding-block: 8px;
+  }
+}
+
+ion-input[type="number"],
+ion-input[type="datetime-local"] {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.05rem;
+}
+
+ion-note {
+  color: var(--app-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.field-underline {
+  height: 1px;
+  background: var(--app-divider);
+  margin-top: 6px;
+  transition: background 0.2s ease;
+}
+
+.field:hover .field-underline,
+.field:focus-within .field-underline {
+  background: var(--brand-accent);
+}
+
+/* ----------------------------------------------------------
+   Range / slider — corporate restraint, no glow
+   Crucially: fixed height block = no layout shift on drag
+   ---------------------------------------------------------- */
+ion-range {
+  --bar-height: 3px;
+  --bar-background: var(--app-bg-inset);
+  --bar-background-active: var(--brand-accent);
+  --bar-border-radius: 999px;
+  --knob-background: #FFFFFF;
+  --knob-size: 22px;
+  --knob-box-shadow:
+    0 0 0 1px var(--brand-accent),
+    0 1px 2px rgba(11, 17, 24, 0.18);
+  padding-inline: 0;
+  padding-block: 10px;
+  /* Fixed reserved height — keep the row a stable size while dragging */
+  min-height: 44px;
+  contain: layout;
+}
+
+@media (prefers-color-scheme: dark) {
+  ion-range {
+    --knob-background: var(--app-bg-elevated);
+  }
+}
+
+/* ============================================================
+   Buttons — flat, sober, accent-filled primary
+   ============================================================ */
+ion-button {
+  --border-radius: var(--radius-md);
+  --box-shadow: none;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.94rem;
+  letter-spacing: 0;
+  text-transform: none;
+  margin: 0;
+
+  &[expand="block"] {
+    --padding-top: 22px;
+    --padding-bottom: 22px;
+    --background: var(--brand-accent);
+    --color: var(--brand-accent-on);
+    --background-hover: var(--brand-accent-strong);
+    --background-activated: var(--brand-accent-strong);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.005em;
+  }
+
+  &[fill="outline"] {
+    --border-color: var(--app-divider-strong);
+    --color: var(--app-text-strong);
+    --background-hover: rgba(11, 17, 24, 0.04);
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    font-weight: 600;
+
+    &:hover {
+      --border-color: var(--brand-accent);
+      --color: var(--brand-accent);
+    }
+  }
+}
+
+ion-spinner {
+  --color: currentColor;
+}
+
+ion-chip {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  text-transform: none;
+  --background: var(--app-bg-inset);
+  border: 1px solid var(--app-divider);
+  border-radius: var(--radius-sm);
+  height: 28px;
+  color: var(--app-text-body);
+}
+
+/* ============================================================
+   Page-level container
+   ============================================================ */
+
+.page {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 8px 18px 56px;
+}
+
+@media (min-width: 640px) {
+  .page {
+    padding: 16px 28px 80px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page {
+    max-width: 1180px;
+    padding: 28px 40px 96px;
+  }
+}
+
+/* ============================================================
+   Page-load entrance — short, reserved
+   ============================================================ */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.rise {
+  animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@for $i from 1 through 8 {
+  .rise-#{$i} {
+    animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: #{$i * 0.04}s;
+  }
+}
+
+/* ============================================================
+   Status indicator dot — static, no pulse
+   The previous pulsing-glow signal-dot was the most "demo-y"
+   piece on screen. Now: one solid accent dot.
+   ============================================================ */
+.signal-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+  vertical-align: middle;
+  margin-right: 8px;
+  flex: none;
+}
+
+/* ============================================================
+   Reduced motion — respect user preference
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  .rise,
+  .rise-1,
+  .rise-2,
+  .rise-3,
+  .rise-4,
+  .rise-5,
+  .rise-6,
+  .rise-7,
+  .rise-8 {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ============================================================
+   Selection — accent-tinted, refined
+   ============================================================ */
+::selection {
+  background: var(--brand-accent-soft);
+  color: var(--app-text-strong);
 }

@@ -1,53 +1,213 @@
+/* ============================================================
+   EV Charging Optimizer — Theme Tokens
+   Corporate, paper-light by default. Dark mode via system pref.
+   Single accent. Restrained surfaces. Sober type.
+   ============================================================ */
+
 :root {
-  --ion-color-primary: #4ade80;
-  --ion-color-primary-rgb: 74, 222, 128;
-  --ion-color-primary-contrast: #042713;
-  --ion-color-primary-contrast-rgb: 4, 39, 19;
-  --ion-color-primary-shade: #36b966;
-  --ion-color-primary-tint: #5be590;
+  /* ─────────────────────────────────────────────────────────
+     1 · BRAND ACCENT  (single source of truth)
 
-  --ion-color-secondary: #38bdf8;
-  --ion-color-secondary-rgb: 56, 189, 248;
-  --ion-color-secondary-contrast: #00253c;
-  --ion-color-secondary-contrast-rgb: 0, 37, 60;
-  --ion-color-secondary-shade: #2da7dc;
-  --ion-color-secondary-tint: #4cc6fa;
+     Three corporate colorways for the EV / energy space.
+     Petrol Teal is active. To switch, comment Option A and
+     uncomment Option B or C — every surface picks it up
+     because the rest of the theme references --brand-accent.
+     ───────────────────────────────────────────────────────── */
 
-  --ion-color-warning: #facc15;
-  --ion-color-danger: #f87171;
-  --ion-color-success: #4ade80;
+  /* ── Option A · Petrol Teal — utility-grade, calm (active) ── */
+  --brand-accent:        #0E5060;
+  --brand-accent-strong: #0A3F4D;
+  --brand-accent-tint:   #186A7E;
+  --brand-accent-soft:   rgba(14, 80, 96, 0.08);
+  --brand-accent-line:   rgba(14, 80, 96, 0.22);
+  --brand-accent-on:     #FFFFFF;
+  --brand-accent-rgb:    14, 80, 96;
 
-  --app-bg-deep: #0d1f2d;
-  --app-bg-surface: #15293a;
-  --app-bg-card: #1c3346;
-  --app-text-strong: #f8fafc;
-  --app-text-muted: #94a3b8;
-  --app-divider: rgba(255, 255, 255, 0.08);
+  /* ── Option B · Boreal Forest — sustainability tilt ──
+  --brand-accent:        #1F5F47;
+  --brand-accent-strong: #154735;
+  --brand-accent-tint:   #277054;
+  --brand-accent-soft:   rgba(31, 95, 71, 0.08);
+  --brand-accent-line:   rgba(31, 95, 71, 0.22);
+  --brand-accent-on:     #FFFFFF;
+  --brand-accent-rgb:    31, 95, 71;
+  */
+
+  /* ── Option C · Boardroom Navy — institutional / fintech ──
+  --brand-accent:        #1A3D6D;
+  --brand-accent-strong: #122E54;
+  --brand-accent-tint:   #234980;
+  --brand-accent-soft:   rgba(26, 61, 109, 0.08);
+  --brand-accent-line:   rgba(26, 61, 109, 0.22);
+  --brand-accent-on:     #FFFFFF;
+  --brand-accent-rgb:    26, 61, 109;
+  */
+
+  /* ─────────────────────────────────────────────────────────
+     2 · SURFACES  (light)
+     Warm paper background prevents the "blue-tinted SaaS"
+     cliche; cards stay pure white for crispness.
+     ───────────────────────────────────────────────────────── */
+  --app-bg-deep:     #F4F3EE;   /* page background — warm off-white */
+  --app-bg-surface:  #FAF9F5;   /* sticky toolbar / nav */
+  --app-bg-card:     #FFFFFF;   /* card body */
+  --app-bg-elevated: #FFFFFF;   /* dropdowns, popovers */
+  --app-bg-inset:    #F0EFE9;   /* track wells, code blocks */
+
+  /* ─────────────────────────────────────────────────────────
+     3 · TEXT  (every level passes WCAG AA on bg-card)
+     ───────────────────────────────────────────────────────── */
+  --app-text-strong: #0B1118;   /* headlines, primary readout */
+  --app-text-body:   #2A323E;   /* body copy */
+  --app-text-muted:  #5B6573;   /* labels, captions */
+  --app-text-faint:  #8A95A5;   /* timestamps, footers */
+
+  /* ─────────────────────────────────────────────────────────
+     4 · LINES
+     ───────────────────────────────────────────────────────── */
+  --app-divider:        rgba(11, 17, 24, 0.08);
+  --app-divider-strong: rgba(11, 17, 24, 0.16);
+
+  /* ─────────────────────────────────────────────────────────
+     5 · STATUS  (muted, not candy)
+     ───────────────────────────────────────────────────────── */
+  --status-success: #1F5F47;
+  --status-warning: #B86E1F;
+  --status-danger:  #B23A3A;
+  --status-success-soft: rgba(31, 95, 71, 0.08);
+  --status-warning-soft: rgba(184, 110, 31, 0.08);
+  --status-danger-soft:  rgba(178, 58, 58, 0.08);
+
+  /* ─────────────────────────────────────────────────────────
+     6 · ELEVATION
+     ───────────────────────────────────────────────────────── */
+  --shadow-sm: 0 1px 2px rgba(11, 17, 24, 0.04);
+  --shadow-md: 0 1px 2px rgba(11, 17, 24, 0.04),
+               0 4px 12px -4px rgba(11, 17, 24, 0.06);
+  --shadow-lg: 0 1px 2px rgba(11, 17, 24, 0.04),
+               0 16px 32px -16px rgba(11, 17, 24, 0.10);
+
+  /* ─────────────────────────────────────────────────────────
+     7 · SHAPE
+     Smaller radii than the previous theme — corporate
+     interfaces favour crisper rectangles over pill-soft.
+     ───────────────────────────────────────────────────────── */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* ─────────────────────────────────────────────────────────
+     8 · TYPOGRAPHY
+     Manrope: geometric, institutional, available 200–800.
+     Used for both UI and display — single-family discipline
+     reads more enterprise than display+body pairing.
+     JetBrains Mono carries every figure for tabular alignment.
+     ───────────────────────────────────────────────────────── */
+  --font-display: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    system-ui, sans-serif;
+  --font-body: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
+
+  /* ─────────────────────────────────────────────────────────
+     9 · IONIC MAPPINGS  (tokens propagate everywhere)
+     ───────────────────────────────────────────────────────── */
+  --ion-color-primary: var(--brand-accent);
+  --ion-color-primary-rgb: var(--brand-accent-rgb);
+  --ion-color-primary-contrast: var(--brand-accent-on);
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: var(--brand-accent-strong);
+  --ion-color-primary-tint: var(--brand-accent-tint);
+
+  --ion-color-secondary: #5B6573;
+  --ion-color-secondary-rgb: 91, 101, 115;
+  --ion-color-secondary-contrast: #FFFFFF;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #4A5260;
+  --ion-color-secondary-tint: #6F7886;
+
+  --ion-color-tertiary: #8A95A5;
+  --ion-color-tertiary-rgb: 138, 149, 165;
+
+  --ion-color-success: var(--status-success);
+  --ion-color-warning: var(--status-warning);
+  --ion-color-danger:  var(--status-danger);
 
   --ion-background-color: var(--app-bg-deep);
-  --ion-background-color-rgb: 13, 31, 45;
-  --ion-text-color: var(--app-text-strong);
-  --ion-text-color-rgb: 248, 250, 252;
-  --ion-toolbar-background: var(--app-bg-surface);
+  --ion-background-color-rgb: 244, 243, 238;
+  --ion-text-color: var(--app-text-body);
+  --ion-text-color-rgb: 42, 50, 62;
+  --ion-toolbar-background: transparent;
   --ion-tab-bar-background: var(--app-bg-surface);
   --ion-card-background: var(--app-bg-card);
   --ion-item-background: transparent;
   --ion-border-color: var(--app-divider);
+  --ion-font-family: var(--font-body);
+
+  --ion-color-step-50:  #FAF9F5;
+  --ion-color-step-100: #F4F3EE;
+  --ion-color-step-150: #EAE8E0;
+  --ion-color-step-200: #DAD8CE;
+  --ion-color-step-250: #C9C7BD;
+  --ion-color-step-300: #B5B3A9;
+  --ion-color-step-350: #A09E94;
+  --ion-color-step-400: #8B8980;
+  --ion-color-step-450: #76746C;
+  --ion-color-step-500: #615F58;
+  --ion-color-step-550: #4D4B45;
+  --ion-color-step-600: #3B3935;
+  --ion-color-step-650: #2C2B27;
+  --ion-color-step-700: #1F1E1B;
+  --ion-color-step-750: #161513;
+  --ion-color-step-800: #0F0E0D;
+  --ion-color-step-850: #0A0A09;
+  --ion-color-step-900: #060605;
+  --ion-color-step-950: #030303;
 }
 
-@media (prefers-color-scheme: light) {
+/* ─────────────────────────────────────────────────────────────
+   DARK THEME · automatic via system preference.
+   Same accent, same restraint — graphite surfaces.
+   ───────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
   :root {
-    --ion-background-color: #f8fafc;
-    --ion-background-color-rgb: 248, 250, 252;
-    --ion-text-color: #0f172a;
-    --ion-text-color-rgb: 15, 23, 42;
-    --ion-toolbar-background: #ffffff;
-    --ion-card-background: #ffffff;
-    --ion-tab-bar-background: #ffffff;
-    --ion-border-color: rgba(15, 23, 42, 0.08);
+    --app-bg-deep:     #0E1218;
+    --app-bg-surface:  #141922;
+    --app-bg-card:     #161C26;
+    --app-bg-elevated: #1B222D;
+    --app-bg-inset:    #0A0D12;
 
-    --app-text-strong: #0f172a;
-    --app-text-muted: #475569;
-    --app-divider: rgba(15, 23, 42, 0.08);
+    --app-text-strong: #F1F2F4;
+    --app-text-body:   #CCD0D7;
+    --app-text-muted:  #8A93A1;
+    --app-text-faint:  #5E6775;
+
+    --app-divider:        rgba(255, 255, 255, 0.07);
+    --app-divider-strong: rgba(255, 255, 255, 0.14);
+
+    --brand-accent-soft: rgba(var(--brand-accent-rgb), 0.18);
+    --brand-accent-line: rgba(var(--brand-accent-rgb), 0.36);
+
+    --status-success-soft: rgba(31, 95, 71, 0.18);
+    --status-warning-soft: rgba(184, 110, 31, 0.18);
+    --status-danger-soft:  rgba(178, 58, 58, 0.18);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.4),
+                 0 8px 24px -8px rgba(0, 0, 0, 0.55);
+    --shadow-lg: 0 1px 2px rgba(0, 0, 0, 0.4),
+                 0 24px 48px -16px rgba(0, 0, 0, 0.6);
+
+    --ion-background-color: var(--app-bg-deep);
+    --ion-background-color-rgb: 14, 18, 24;
+    --ion-text-color: var(--app-text-body);
+    --ion-text-color-rgb: 204, 208, 215;
+
+    --ion-color-step-50:  #161C26;
+    --ion-color-step-100: #1B222D;
+    --ion-color-step-150: #232B38;
+    --ion-color-step-200: #2C3543;
   }
 }

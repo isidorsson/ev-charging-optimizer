@@ -12,7 +12,6 @@ import {
   IonIcon,
   IonChip,
   IonLabel,
-  IonNote,
 } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import {
@@ -49,7 +48,6 @@ interface BarSlot extends ScheduleSlot {
     IonIcon,
     IonChip,
     IonLabel,
-    IonNote,
   ],
   templateUrl: "./schedule.page.html",
   styleUrl: "./schedule.page.scss",
@@ -61,6 +59,7 @@ export class SchedulePage {
 
   readonly result = this.store.latest;
   readonly notifyState = signal<"idle" | "ok" | "denied" | "unsupported" | "error">("idle");
+  readonly hoveredIndex = signal<number | null>(null);
 
   readonly bars = computed<BarSlot[]>(() => {
     const r = this.result();

@@ -1,57 +1,511 @@
+/* ============================================================
+   Home page — Brief / Input
+   Mobile = stacked. Tablet = paired. Desktop = 12-col grid.
+   Tokens drive every colour — no literal hex in this file.
+   ============================================================ */
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
 .hero {
-  margin: 8px 0 24px;
-  h1 {
-    margin: 0 0 8px;
-    font-size: 1.85rem;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  padding: 16px 0 12px;
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+    gap: 56px;
+    align-items: end;
+    padding: 12px 0 28px;
+    border-bottom: 1px solid var(--app-divider);
   }
 }
 
-h2 {
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 6vw, 3.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.028em;
+  margin: 8px 0 4px;
+  color: var(--app-text-strong);
+  text-wrap: balance;
+}
+
+/* ----------------------------------------------------------
+   Brand emphasis on key terms.
+   The accent is doing the work — no glow, no neon underline.
+   A 1px accent rule under each highlighted word reads as a
+   deliberate editorial mark, not a decoration.
+   ---------------------------------------------------------- */
+.headline .hl {
+  color: var(--brand-accent);
+  position: relative;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.headline .hl::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.06em;
+  height: 1px;
+  background: var(--brand-accent);
+  opacity: 0.45;
+}
+
+.lede {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--app-text-body);
+  max-width: 56ch;
   margin: 0;
-  font-size: 1.05rem;
-  letter-spacing: -0.01em;
+  text-wrap: pretty;
 }
 
-ion-input,
-ion-select {
-  --background: transparent;
-  --padding-start: 0;
-  --padding-end: 0;
-  font-variant-numeric: tabular-nums;
+.lede em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--app-text-strong);
 }
 
-ion-range {
-  padding-inline: 0;
+@media (min-width: 1024px) {
+  .lede {
+    font-size: 1.05rem;
+  }
 }
 
-.weight-label {
-  margin: 4px 4px 0;
-  text-align: center;
-  font-size: 0.95rem;
-  color: var(--ion-color-primary);
+/* ----- Hero stats card (right rail on desktop) ----- */
+.hero-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px 24px;
+  background: var(--app-bg-card);
+  border: 1px solid var(--app-divider);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--app-divider);
+    margin: 0;
+  }
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .stat-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--app-text-strong);
+
+    .unit {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      margin-left: 3px;
+      color: var(--app-text-muted);
+      letter-spacing: 0;
+    }
+  }
+
+  .stat-label {
+    font-size: 0.82rem;
+    color: var(--app-text-muted);
+    line-height: 1.4;
+  }
+}
+
+/* ============================================================
+   FORM GRID — desktop layout
+   ============================================================ */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+@media (min-width: 1024px) {
+  .form-grid {
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: 22px;
+  }
+
+  .vehicle-card {
+    grid-column: span 7;
+    grid-row: 1;
+  }
+
+  .departure-card {
+    grid-column: span 5;
+    grid-row: 1;
+  }
+
+  .preview-card {
+    grid-column: span 5;
+    grid-row: 2;
+  }
+
+  .priority-card {
+    grid-column: span 7;
+    grid-row: 2;
+  }
+
+  .cta {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+}
+
+/* ============================================================
+   Section headers
+   ============================================================ */
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+  margin: 0;
+  color: var(--app-text-strong);
+}
+
+@media (min-width: 1024px) {
+  .section-title {
+    font-size: 1.6rem;
+  }
+}
+
+/* ============================================================
+   Vehicle card — 2x2 grid on tablet+
+   ============================================================ */
+
+.vehicle-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+@media (min-width: 560px) {
+  .vehicle-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 32px;
+  }
+}
+
+.field {
+  min-width: 0;
+}
+
+.range-field {
+  padding-top: 4px;
+}
+
+.range-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+
+  > label {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--app-text-muted);
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .value-tag {
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--app-text-strong);
+  }
+}
+
+/* ============================================================
+   Departure card
+   ============================================================ */
+
+.field-help {
+  margin: 6px 0 0;
+  font-size: 0.74rem;
+  color: var(--app-text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ============================================================
+   Preview card — live feedback
+   No tinted gradient — relies on a single accent rule at the
+   top edge to mark it as "live" rather than gradient drama.
+   ============================================================ */
+
+.preview-card {
+  background: var(--app-bg-card);
+  border: 1px solid var(--app-divider);
+  position: relative;
+}
+
+.preview-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--brand-accent);
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+
+  @media (min-width: 1024px) {
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+  }
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-bottom: 18px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--app-divider);
+}
+
+@media (max-width: 360px) {
+  .preview-grid {
+    grid-template-columns: 1fr 1fr;
+
+    .preview-stat:last-child {
+      grid-column: span 2;
+    }
+  }
+}
+
+.preview-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+
+  .preview-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--app-text-muted);
+    font-weight: 600;
+  }
+
+  .preview-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--app-text-strong);
+    letter-spacing: -0.022em;
+    font-variant-numeric: tabular-nums;
+
+    .preview-unit {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 500;
+      margin-left: 3px;
+      color: var(--app-text-muted);
+      letter-spacing: 0;
+    }
+  }
+}
+
+.preview-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--app-text-body);
+  line-height: 1.4;
+
+  .signal-dot {
+    background: var(--brand-accent);
+  }
+
+  &.warn {
+    color: var(--status-warning);
+
+    .signal-dot {
+      background: var(--status-warning);
+    }
+  }
+}
+
+/* ============================================================
+   Priority card
+   ============================================================ */
+
+.priority-help {
+  margin: 0 0 22px;
+  font-size: 0.92rem;
+  color: var(--app-text-muted);
+  line-height: 1.55;
+  max-width: 52ch;
+}
+
+.weight-track {
+  margin-bottom: 8px;
+}
+
+.weight-anchors {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+
+  .anchor-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--app-text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+
+    ion-icon {
+      font-size: 16px;
+    }
+
+    &.right {
+      flex-direction: row-reverse;
+    }
+  }
+}
+
+.weight-readout {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--app-divider);
+
+  .weight-num {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--app-text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .weight-text {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--app-text-strong);
+    text-align: right;
+  }
+}
+
+/* ============================================================
+   CTA
+   ============================================================ */
+
+.cta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin: 0;
-  padding: 10px 14px;
-  border-radius: 10px;
-  background: rgba(248, 113, 113, 0.12);
-  color: var(--ion-color-danger);
-  font-size: 0.9rem;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: var(--status-danger-soft);
+  border: 1px solid rgba(178, 58, 58, 0.22);
+  color: var(--status-danger);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  font-weight: 500;
+
+  ion-icon {
+    flex: none;
+    font-size: 20px;
+    color: var(--status-danger);
+  }
 }
 
-ion-button {
-  margin-top: 8px;
-  --padding-top: 18px;
-  --padding-bottom: 18px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+.cta-foot {
+  margin: 6px 0 0;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--app-text-muted);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
 }
 
-ion-title ion-icon {
-  vertical-align: -3px;
-  margin-right: 4px;
-  color: var(--ion-color-primary);
+/* ============================================================
+   Page foot
+   ============================================================ */
+
+.page-foot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+  padding-top: 22px;
+  border-top: 1px solid var(--app-divider);
+
+  .foot-mark {
+    color: var(--brand-accent);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .foot-stack {
+    font-size: 0.74rem;
+    color: var(--app-text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
 }

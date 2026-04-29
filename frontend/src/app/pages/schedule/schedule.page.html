@@ -1,132 +1,234 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-back-button defaultHref="/" text="" aria-label="Back to brief"></ion-back-button>
     </ion-buttons>
-    <ion-title>Your charging plan</ion-title>
+    <ion-title>
+      <span class="signal-dot" aria-hidden="true"></span>
+      Schedule · Output
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ng-container *ngIf="result(); else empty">
-    <section class="surface-card summary">
-      <div class="metric-row">
-        <div class="metric-pill">
-          <ion-icon name="cash-outline" aria-hidden="true"></ion-icon>
-          <div>
-            <span class="value metric">
-              {{ result()!.summary.totalCost | number: "1.2-2" }}
-              {{ result()!.summary.currency }}
-            </span>
-            <span class="subtle">total cost</span>
+<ion-content [fullscreen]="true">
+  <div class="page schedule-page">
+    <ng-container *ngIf="result(); else empty">
+      <!-- ========== Header + Hero KPI ========== -->
+      <section class="output-hero rise">
+        <header class="result-head">
+          <span class="eyebrow"><span class="num">∎</span>&nbsp;Output</span>
+          <h1 class="display result-title">Your charging plan.</h1>
+          <p class="result-sub">
+            Computed against {{ result()!.schedule.length }} hourly forecast slots.
+            Lower score wins.
+          </p>
+        </header>
+
+        <div class="hero-kpi" aria-label="Savings summary">
+          <div class="kpi-main">
+            <span class="kpi-pre">Δ vs.&nbsp;plug-in-now</span>
+            <div class="kpi-value display">
+              <span class="minus" aria-hidden="true">−</span><span class="kpi-num">{{ (result()!.summary.savingsVsNaive * 100) | number: "1.0-0" }}</span><span class="kpi-pct">%</span>
+            </div>
+            <span class="kpi-foot">cheaper · same energy delivered</span>
+          </div>
+
+          <dl class="kpi-side">
+            <div class="kpi-row">
+              <dt>Total cost</dt>
+              <dd class="kpi-fig metric">
+                {{ result()!.summary.totalCost | number: "1.2-2" }}<span class="kpi-unit">{{ result()!.summary.currency }}</span>
+              </dd>
+            </div>
+            <div class="kpi-row">
+              <dt>CO₂</dt>
+              <dd class="kpi-fig metric">
+                {{ (result()!.summary.totalCarbonGrams / 1000) | number: "1.1-1" }}<span class="kpi-unit">kg</span>
+              </dd>
+            </div>
+            <div class="kpi-row">
+              <dt>Charging</dt>
+              <dd class="kpi-fig metric">
+                {{ result()!.summary.chargingHours | number: "1.1-1" }}<span class="kpi-unit">h</span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ========== Window callout ========== -->
+      <section class="surface-card window-card rise rise-2">
+        <div class="window-prose">
+          <span class="eyebrow"><span class="num">→</span>&nbsp;Window opens</span>
+          <p class="window-time display">
+            {{ formatTime(result()!.summary.cheapestWindowStart) }}
+          </p>
+          <p class="window-meta">Plug in then — we'll watch the clock.</p>
+        </div>
+
+        <div class="window-action">
+          <ion-button
+            fill="outline"
+            (click)="enableAlert()"
+            [disabled]="!result()!.summary.cheapestWindowStart"
+          >
+            <ion-icon slot="start" name="notifications-outline" aria-hidden="true"></ion-icon>
+            Notify Me
+          </ion-button>
+
+          <ion-chip
+            *ngIf="notifyState() !== 'idle'"
+            [color]="notifyState() === 'ok' ? 'success' : 'warning'"
+            aria-live="polite"
+          >
+            <ion-label>
+              <ng-container [ngSwitch]="notifyState()">
+                <span *ngSwitchCase="'ok'">Scheduled</span>
+                <span *ngSwitchCase="'denied'">Permission denied</span>
+                <span *ngSwitchCase="'unsupported'">Not supported</span>
+                <span *ngSwitchCase="'error'">Error · retry</span>
+              </ng-container>
+            </ion-label>
+          </ion-chip>
+        </div>
+      </section>
+
+      <!-- ========== Chart ========== -->
+      <section class="surface-card chart-card rise rise-3">
+        <header class="section-head">
+          <span class="eyebrow"><span class="num">02</span>&nbsp;Forecast</span>
+          <h2 class="section-title">Hour by hour</h2>
+          <p class="section-help">
+            Bar height = spot price · highlighted hours = optimal charging.
+            Hover a bar to inspect.
+          </p>
+        </header>
+
+        <div class="bars-wrap">
+          <div class="bars" role="img" aria-label="Hourly price forecast bar chart">
+            <div
+              class="bar-col"
+              *ngFor="let b of bars(); let i = index"
+              [class.charging]="b.charging"
+              [class.is-hovered]="hoveredIndex() === i"
+              (mouseenter)="hoveredIndex.set(i)"
+              (mouseleave)="hoveredIndex.set(null)"
+              (focus)="hoveredIndex.set(i)"
+              (blur)="hoveredIndex.set(null)"
+              tabindex="0"
+              [attr.aria-label]="
+                b.hour + ', ' +
+                (b.pricePerKwh | number: '1.2-3') + ' ' + b.currency + ' per kWh, ' +
+                (b.intensityGCo2PerKwh | number: '1.0-0') + ' grams CO2 per kWh' +
+                (b.charging ? ', charging' : '')
+              "
+            >
+              <div class="bar-track">
+                <div class="bar" [style.height.%]="6 + b.priceRel * 94"></div>
+              </div>
+              <span class="hour metric">{{ b.hour }}</span>
+            </div>
           </div>
         </div>
-        <div class="metric-pill">
-          <ion-icon name="leaf-outline" aria-hidden="true"></ion-icon>
-          <div>
-            <span class="value metric">
-              {{ (result()!.summary.totalCarbonGrams / 1000) | number: "1.1-1" }} kg
-            </span>
-            <span class="subtle">CO₂ emitted</span>
-          </div>
+
+        <footer class="chart-foot">
+          <span class="legend-item">
+            <span class="dot charging" aria-hidden="true"></span>
+            <span>Charging</span>
+          </span>
+          <span class="legend-item">
+            <span class="dot resting" aria-hidden="true"></span>
+            <span>Skip</span>
+          </span>
+          <span class="legend-axis metric">
+            y · {{ result()!.summary.currency }}/kWh
+          </span>
+        </footer>
+      </section>
+
+      <!-- ========== Slot ledger — proper data table on desktop ========== -->
+      <section class="surface-card list-card rise rise-4">
+        <header class="section-head">
+          <span class="eyebrow"><span class="num">03</span>&nbsp;Slot Ledger</span>
+          <h2 class="section-title">Plan in detail</h2>
+        </header>
+
+        <!-- Desktop: real table -->
+        <div class="ledger-table-wrap">
+          <table class="ledger-table" role="table">
+            <thead>
+              <tr>
+                <th scope="col" class="th-state"></th>
+                <th scope="col" class="th-time">Time</th>
+                <th scope="col" class="th-state-text">State</th>
+                <th scope="col" class="th-num">Energy</th>
+                <th scope="col" class="th-num">Price</th>
+                <th scope="col" class="th-num">CO₂</th>
+                <th scope="col" class="th-bar">Relative price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let s of bars(); let i = index"
+                [class.charging]="s.charging"
+                [class.is-hovered]="hoveredIndex() === i"
+                (mouseenter)="hoveredIndex.set(i)"
+                (mouseleave)="hoveredIndex.set(null)"
+              >
+                <td class="td-state">
+                  <span class="state-pip" aria-hidden="true"></span>
+                </td>
+                <td class="td-time metric">
+                  {{ s.startsAt | date: "EEE HH:mm" }}
+                </td>
+                <td class="td-state-text">
+                  <span class="state-badge" [class.on]="s.charging">
+                    {{ s.charging ? "Charge" : "Skip" }}
+                  </span>
+                </td>
+                <td class="td-num metric">
+                  {{ s.energyKwh | number: "1.1-1" }}<span class="cell-unit">kWh</span>
+                </td>
+                <td class="td-num metric">
+                  {{ s.pricePerKwh | number: "1.2-3" }}<span class="cell-unit">{{ s.currency }}</span>
+                </td>
+                <td class="td-num metric">
+                  {{ s.intensityGCo2PerKwh | number: "1.0-0" }}<span class="cell-unit">g</span>
+                </td>
+                <td class="td-bar">
+                  <div class="row-bar-track" aria-hidden="true">
+                    <div
+                      class="row-bar"
+                      [style.width.%]="6 + s.priceRel * 94"
+                    ></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="metric-pill highlight">
-          <ion-icon name="trending-down-outline" aria-hidden="true"></ion-icon>
-          <div>
-            <span class="value metric">
-              {{ (result()!.summary.savingsVsNaive * 100) | number: "1.0-0" }}%
-            </span>
-            <span class="subtle">vs charging now</span>
-          </div>
-        </div>
+      </section>
+
+      <footer class="page-foot">
+        <span class="foot-mark" aria-hidden="true">∎</span>
+        <span class="foot-stack metric" translate="no">
+          scoring · (1−w)·norm(p) + w·norm(c)
+        </span>
+      </footer>
+    </ng-container>
+
+    <ng-template #empty>
+      <div class="empty">
+        <span class="eyebrow"><span class="num">∅</span>&nbsp;No data</span>
+        <h2 class="display empty-title">No schedule yet.</h2>
+        <p class="empty-sub">
+          Set your trip on the brief page, then come back.
+        </p>
+        <ion-button (click)="goBack()" fill="outline">
+          <ion-icon slot="start" name="arrow-back-outline" aria-hidden="true"></ion-icon>
+          Back to Brief
+        </ion-button>
       </div>
-
-      <p class="subtle window">
-        Cheapest window starts
-        <strong>{{ formatTime(result()!.summary.cheapestWindowStart) }}</strong>
-        — about
-        <strong>{{ result()!.summary.chargingHours | number: "1.1-1" }} h</strong>
-        of charging at your set rate.
-      </p>
-
-      <ion-button
-        fill="outline"
-        shape="round"
-        (click)="enableAlert()"
-        [disabled]="!result()!.summary.cheapestWindowStart"
-      >
-        <ion-icon slot="start" name="notifications-outline"></ion-icon>
-        Notify me when it starts
-      </ion-button>
-
-      <ion-chip
-        *ngIf="notifyState() !== 'idle'"
-        [color]="notifyState() === 'ok' ? 'success' : 'warning'"
-      >
-        <ion-label>
-          <ng-container [ngSwitch]="notifyState()">
-            <span *ngSwitchCase="'ok'">Notification scheduled.</span>
-            <span *ngSwitchCase="'denied'">Permission denied.</span>
-            <span *ngSwitchCase="'unsupported'">Push not supported on this device.</span>
-            <span *ngSwitchCase="'error'">Couldn't schedule. Try again.</span>
-          </ng-container>
-        </ion-label>
-      </ion-chip>
-    </section>
-
-    <section class="surface-card chart">
-      <div class="chart-head">
-        <h2>Hour by hour</h2>
-        <span class="subtle">price · charging hours highlighted</span>
-      </div>
-
-      <div class="bars">
-        <div
-          class="bar-col"
-          *ngFor="let b of bars()"
-          [class.charging]="b.charging"
-          [title]="b.hour + ' · ' + (b.pricePerKwh | number: '1.2-3') + ' ' + b.currency + '/kWh · ' + (b.intensityGCo2PerKwh | number: '1.0-0') + ' gCO₂/kWh'"
-        >
-          <div class="bar" [style.height.%]="20 + b.priceRel * 80"></div>
-          <span class="hour">{{ b.hour }}</span>
-        </div>
-      </div>
-
-      <div class="legend">
-        <span class="dot charging"></span> Charging hour
-        <span class="dot resting"></span> Skip
-      </div>
-    </section>
-
-    <section class="surface-card list">
-      <h2>Schedule</h2>
-      <ul class="schedule-rows">
-        <li
-          *ngFor="let s of result()!.schedule"
-          [class.charging]="s.charging"
-        >
-          <div class="when">
-            <span class="metric">
-              {{ s.startsAt | date: "EEE HH:mm" }}
-            </span>
-            <ion-note>{{ s.energyKwh | number: "1.1-1" }} kWh</ion-note>
-          </div>
-          <div class="figs">
-            <span>{{ s.pricePerKwh | number: "1.2-3" }} {{ s.currency }}/kWh</span>
-            <span class="subtle">{{ s.intensityGCo2PerKwh | number: "1.0-0" }} gCO₂/kWh</span>
-          </div>
-        </li>
-      </ul>
-    </section>
-  </ng-container>
-
-  <ng-template #empty>
-    <div class="empty">
-      <p>No schedule yet.</p>
-      <ion-button (click)="goBack()" shape="round">
-        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
-        Back to setup
-      </ion-button>
-    </div>
-  </ng-template>
+    </ng-template>
+  </div>
 </ion-content>

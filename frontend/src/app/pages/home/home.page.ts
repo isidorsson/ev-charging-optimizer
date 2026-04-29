@@ -1,4 +1,4 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, computed, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
@@ -19,7 +19,13 @@ import {
   IonSpinner,
 } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
-import { flashOutline, leafOutline, cashOutline, timeOutline } from "ionicons/icons";
+import {
+  flashOutline,
+  leafOutline,
+  cashOutline,
+  timeOutline,
+  alertCircleOutline,
+} from "ionicons/icons";
 
 import { ApiService, type OptimizeRequest } from "../../services/api.service";
 import { ScheduleStoreService } from "../../services/schedule-store.service";
@@ -84,8 +90,41 @@ export class HomePage {
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
 
+  /* Live preview — what we're optimizing for, before submit. */
+  readonly preview = computed(() => {
+    const f = this.form();
+    const deltaPct = Math.max(0, f.targetSoc - f.currentSoc);
+    const energyKwh = (deltaPct / 100) * f.batteryKwh;
+    const hoursAtMaxRate = f.maxChargeKw > 0 ? energyKwh / f.maxChargeKw : 0;
+    const departureMs = new Date(f.departureTime).getTime();
+    const windowHours = Math.max(0, (departureMs - Date.now()) / 3_600_000);
+    const feasible = hoursAtMaxRate <= windowHours;
+    return {
+      energyKwh,
+      hoursAtMaxRate,
+      windowHours,
+      feasible,
+    };
+  });
+
+  readonly departureLabel = computed(() => {
+    const ms = new Date(this.form().departureTime).getTime();
+    if (Number.isNaN(ms)) return "—";
+    const diffH = (ms - Date.now()) / 3_600_000;
+    if (diffH < 0) return "in the past";
+    if (diffH < 1) return "in under an hour";
+    if (diffH < 24) return `in ~${Math.round(diffH)} h`;
+    return `in ~${Math.round(diffH / 24)} d`;
+  });
+
   constructor() {
-    addIcons({ flashOutline, leafOutline, cashOutline, timeOutline });
+    addIcons({
+      flashOutline,
+      leafOutline,
+      cashOutline,
+      timeOutline,
+      alertCircleOutline,
+    });
   }
 
   patch<K extends keyof FormState>(key: K, value: FormState[K]): void {
