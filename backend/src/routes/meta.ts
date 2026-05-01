@@ -1,6 +1,7 @@
 import { Router, type Request, type Response } from "express";
 import { priceCacheStats } from "../services/prices.js";
 import { carbonCacheStats } from "../services/carbon.js";
+import { liveTickStats } from "../services/live-tick.js";
 
 export const metaRouter = Router();
 
@@ -38,5 +39,6 @@ metaRouter.get("/metrics", (_req: Request, res: Response) => {
       prices: priceCacheStats(),
       carbon: carbonCacheStats(),
     },
+    live: liveTickStats(),
   });
 });

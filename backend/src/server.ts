@@ -1,5 +1,6 @@
 import "dotenv/config";
 import path from "node:path";
+import http from "node:http";
 import { fileURLToPath } from "node:url";
 import express from "express";
 import compression from "compression";
@@ -11,6 +12,7 @@ import { forecastRouter } from "./routes/forecast.js";
 import { pushRouter } from "./routes/push.js";
 import { metaRouter } from "./routes/meta.js";
 import { accessLog, requestContext } from "./middleware/request-context.js";
+import { attachLiveTick, closeLiveTick } from "./services/live-tick.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -60,7 +62,22 @@ app.get(/^(?!\/api).*/, (_req, res) => {
   });
 });
 
-app.listen(PORT, () => {
+const server = http.createServer(app);
+const wss = attachLiveTick(server);
+
+server.listen(PORT, () => {
   console.log(`⚡ EV optimizer listening on :${PORT}`);
   console.log(`   serving frontend from ${FRONTEND_DIR}`);
+  console.log(`   live tick WS at ws(s)://<host>/api/live`);
 });
+
+function shutdown(signal: string) {
+  console.log(`${signal} received, draining...`);
+  closeLiveTick(wss).finally(() => {
+    server.close(() => process.exit(0));
+    setTimeout(() => process.exit(1), 10_000).unref();
+  });
+}
+
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));
