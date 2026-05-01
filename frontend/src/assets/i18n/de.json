@@ -3,6 +3,19 @@
     "back": "Zurück",
     "loading": "Lädt…"
   },
+  "live": {
+    "priceLabel": "Spotpreis aktuell",
+    "carbonLabel": "Netz-CO₂-Intensität",
+    "error": "Live-Feed offline",
+    "status": {
+      "idle": "Live",
+      "connecting": "Verbinde",
+      "open": "Live",
+      "closed": "Verbinde neu",
+      "error": "Offline",
+      "stale": "Veraltet"
+    }
+  },
   "home": {
     "title": "E-Auto · Netz-Optimierer",
     "ariaSettings": "Einstellungen öffnen",

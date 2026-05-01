@@ -3,6 +3,19 @@
     "back": "Back",
     "loading": "Loading…"
   },
+  "live": {
+    "priceLabel": "Spot price right now",
+    "carbonLabel": "Grid carbon intensity",
+    "error": "Live feed offline",
+    "status": {
+      "idle": "Live",
+      "connecting": "Connecting",
+      "open": "Live",
+      "closed": "Reconnecting",
+      "error": "Offline",
+      "stale": "Stale"
+    }
+  },
   "home": {
     "title": "EV · Grid Optimizer",
     "ariaSettings": "Open settings",

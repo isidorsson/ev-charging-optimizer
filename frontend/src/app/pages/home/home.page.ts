@@ -36,6 +36,7 @@ import { FormStateService } from "../../services/form-state.service";
 import { ToastService } from "../../services/toast.service";
 import { DepartureTimePickerComponent } from "../../components/departure-time-picker/departure-time-picker.component";
 import { PriceSparklineComponent } from "../../components/price-sparkline/price-sparkline.component";
+import { LiveTickPillComponent } from "../../components/live-tick-pill/live-tick-pill.component";
 import { LocalizedTimePipe } from "../../pipes/localized-time.pipe";
 
 interface FormState {
@@ -87,6 +88,7 @@ function defaultDeparture(): string {
     LucideTrendingDown,
     DepartureTimePickerComponent,
     PriceSparklineComponent,
+    LiveTickPillComponent,
   ],
   templateUrl: "./home.page.html",
   styleUrl: "./home.page.scss",

@@ -3,6 +3,19 @@
     "back": "Tillbaka",
     "loading": "Laddar…"
   },
+  "live": {
+    "priceLabel": "Spotpris just nu",
+    "carbonLabel": "Nätets CO₂-intensitet",
+    "error": "Live-flöde nere",
+    "status": {
+      "idle": "Live",
+      "connecting": "Ansluter",
+      "open": "Live",
+      "closed": "Återansluter",
+      "error": "Frånkopplad",
+      "stale": "Inaktuell"
+    }
+  },
   "home": {
     "title": "Elbil · Nätoptimerare",
     "ariaSettings": "Öppna inställningar",

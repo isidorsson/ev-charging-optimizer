@@ -1,0 +1,40 @@
+<div class="live-pill" [class.is-stale]="stale()" [class.is-down]="status() !== 'open'">
+  <span
+    class="dot"
+    [class.connecting]="status() === 'connecting'"
+    [class.open]="status() === 'open'"
+    [class.closed]="status() !== 'open' && status() !== 'connecting'"
+    aria-hidden="true"
+  ></span>
+
+  <span class="status-text">
+    {{ statusLabel() | translate }}
+  </span>
+
+  @if (tick(); as t) {
+    <span class="metric metric-price" [title]="'live.priceLabel' | translate">
+      <svg lucideZap class="metric-icon" aria-hidden="true"></svg>
+      <span class="metric-value">{{ priceText() }}</span>
+      <span class="unit">/kWh</span>
+
+      @if (trend() === 'up') {
+        <svg lucideTrendingUp class="trend-icon trend-up" aria-hidden="true"></svg>
+      } @else if (trend() === 'down') {
+        <svg lucideTrendingDown class="trend-icon trend-down" aria-hidden="true"></svg>
+      } @else if (trend() === 'flat') {
+        <svg lucideMinus class="trend-icon trend-flat" aria-hidden="true"></svg>
+      }
+    </span>
+
+    <span class="metric metric-carbon" [class]="carbonClass()" [title]="'live.carbonLabel' | translate">
+      <svg lucideLeaf class="metric-icon" aria-hidden="true"></svg>
+      <span class="metric-value">{{ carbonText() }}</span>
+      <span class="unit">CO₂/kWh</span>
+    </span>
+  } @else if (status() === 'error') {
+    <span class="metric metric-error">
+      <svg lucideCircleAlert class="metric-icon" aria-hidden="true"></svg>
+      <span>{{ 'live.error' | translate }}</span>
+    </span>
+  }
+</div>

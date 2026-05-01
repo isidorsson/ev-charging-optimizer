@@ -21,6 +21,20 @@
   padding: 16px 0 12px;
 }
 
+.live-pill-row {
+  display: flex;
+  justify-content: flex-start;
+  margin: -8px 0 0;
+}
+
+@media (min-width: 1024px) {
+  .live-pill-row {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    margin: 0;
+  }
+}
+
 @media (min-width: 1024px) {
   .hero {
     grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);

@@ -3,6 +3,19 @@
     "back": "Atrás",
     "loading": "Cargando…"
   },
+  "live": {
+    "priceLabel": "Precio spot ahora",
+    "carbonLabel": "Intensidad CO₂ de la red",
+    "error": "Feed en vivo caído",
+    "status": {
+      "idle": "En vivo",
+      "connecting": "Conectando",
+      "open": "En vivo",
+      "closed": "Reconectando",
+      "error": "Sin conexión",
+      "stale": "Obsoleto"
+    }
+  },
   "home": {
     "title": "VE · Optimizador de red",
     "ariaSettings": "Abrir ajustes",
