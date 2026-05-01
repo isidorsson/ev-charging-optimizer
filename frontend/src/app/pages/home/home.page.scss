@@ -25,23 +25,36 @@
   display: flex;
   justify-content: flex-start;
   margin: -8px 0 0;
-}
-
-@media (min-width: 1024px) {
-  .live-pill-row {
-    grid-column: 1 / -1;
-    justify-content: flex-end;
-    margin: 0;
-  }
+  min-width: 0;
 }
 
 @media (min-width: 1024px) {
   .hero {
     grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
-    gap: 56px;
+    grid-template-rows: auto 1fr;
+    column-gap: 56px;
+    row-gap: 16px;
     align-items: end;
     padding: 12px 0 28px;
     border-bottom: 1px solid var(--app-divider);
+  }
+
+  .hero-text {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .live-pill-row {
+    grid-column: 2;
+    grid-row: 1;
+    justify-content: flex-end;
+    align-self: end;
+    margin: 0;
+  }
+
+  .hero-stats {
+    grid-column: 2;
+    grid-row: 2;
   }
 }
 
