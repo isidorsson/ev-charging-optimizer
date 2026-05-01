@@ -32,7 +32,7 @@ const FRAME_ANCESTORS = [
 app.use(
   helmet({
     contentSecurityPolicy: {
-      useDefaults: false,
+      useDefaults: true,
       directives: { frameAncestors: FRAME_ANCESTORS },
     },
     frameguard: false, // X-Frame-Options can't list multiple origins; CSP frame-ancestors handles it
