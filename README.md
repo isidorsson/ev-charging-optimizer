@@ -72,6 +72,25 @@ npm run build
 npm start               # http://localhost:3000 — serves API + built PWA
 ```
 
+### Stopping the dev servers
+
+`ng serve` and `tsx watch` sometimes survive a shell exit. If `npm run dev:frontend`
+prints `Port 4200 is already in use`, find and kill the orphan:
+
+```bash
+# macOS / Linux
+lsof -ti:4200 | xargs kill -9
+
+# Windows (PowerShell)
+Get-NetTCPConnection -LocalPort 4200 | Select-Object -Expand OwningProcess | ForEach-Object { Stop-Process -Id $_ -Force }
+
+# Windows (Git Bash / cmd)
+netstat -ano | grep :4200      # note the PID in the last column
+taskkill //F //PID <pid>
+```
+
+Same trick for `:3000` if the backend port is occupied.
+
 ## Deploy to Railway
 
 1. Push this repo to GitHub.
