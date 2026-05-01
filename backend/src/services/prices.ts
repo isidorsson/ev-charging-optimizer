@@ -1,10 +1,21 @@
 import type { PriceSlot } from "../types.js";
+import { TtlCache } from "./cache.js";
 
 const SUPPORTED_REGIONS = ["SE1", "SE2", "SE3", "SE4"] as const;
 type Region = (typeof SUPPORTED_REGIONS)[number];
 
 function isRegion(value: string): value is Region {
   return (SUPPORTED_REGIONS as readonly string[]).includes(value);
+}
+
+const dayCache = new TtlCache<PriceSlot[]>({
+  ttlMs: 30 * 60 * 1000,
+  negativeTtlMs: 60 * 1000,
+  maxEntries: 32,
+});
+
+export function priceCacheStats() {
+  return dayCache.stats();
 }
 
 function pad(n: number): string {
@@ -26,7 +37,7 @@ interface UpstreamSlot {
   time_end: string;
 }
 
-async function fetchDay(date: Date, region: Region): Promise<PriceSlot[]> {
+async function fetchDayUncached(date: Date, region: Region): Promise<PriceSlot[]> {
   const res = await fetch(urlFor(date, region), {
     signal: AbortSignal.timeout(5000),
   });
@@ -38,6 +49,11 @@ async function fetchDay(date: Date, region: Region): Promise<PriceSlot[]> {
     pricePerKwh: s.SEK_per_kWh,
     currency: "SEK",
   }));
+}
+
+function fetchDay(date: Date, region: Region): Promise<PriceSlot[]> {
+  const ymd = `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())}`;
+  return dayCache.getOrLoad(`${region}:${ymd}`, () => fetchDayUncached(date, region));
 }
 
 export async function fetchPrices(

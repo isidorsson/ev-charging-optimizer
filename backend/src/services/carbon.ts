@@ -1,4 +1,5 @@
 import type { CarbonSlot } from "../types.js";
+import { TtlCache } from "./cache.js";
 
 interface UpstreamCarbon {
   data: {
@@ -8,24 +9,38 @@ interface UpstreamCarbon {
   }[];
 }
 
+const cache = new TtlCache<CarbonSlot[]>({
+  ttlMs: 30 * 60 * 1000, // carbon publishes ~30min
+  negativeTtlMs: 60 * 1000,
+  maxEntries: 4,
+});
+
+async function fetchUpstream(): Promise<CarbonSlot[]> {
+  const from = new Date().toISOString();
+  const url = `https://api.carbonintensity.org.uk/intensity/${from}/fw48h`;
+  const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+  if (!res.ok) throw new Error(`carbon upstream ${res.status}`);
+  const json = (await res.json()) as UpstreamCarbon;
+  const halfHourly = json.data.map((d) => ({
+    startsAt: d.from,
+    endsAt: d.to,
+    intensityGCo2PerKwh: d.intensity.forecast,
+  }));
+  return collapseToHourly(halfHourly);
+}
+
 export async function fetchCarbon(hoursAhead: number): Promise<CarbonSlot[]> {
+  const bucket = Math.floor(Date.now() / (30 * 60 * 1000));
   try {
-    const from = new Date().toISOString();
-    const url = `https://api.carbonintensity.org.uk/intensity/${from}/fw48h`;
-    const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
-    if (!res.ok) throw new Error(`carbon upstream ${res.status}`);
-    const json = (await res.json()) as UpstreamCarbon;
-
-    const halfHourly = json.data.map((d) => ({
-      startsAt: d.from,
-      endsAt: d.to,
-      intensityGCo2PerKwh: d.intensity.forecast,
-    }));
-
-    return collapseToHourly(halfHourly).slice(0, hoursAhead);
+    const all = await cache.getOrLoad(`carbon:${bucket}`, fetchUpstream);
+    return all.slice(0, hoursAhead);
   } catch {
     return mockCarbon(hoursAhead);
   }
+}
+
+export function carbonCacheStats() {
+  return cache.stats();
 }
 
 function collapseToHourly(slots: CarbonSlot[]): CarbonSlot[] {
