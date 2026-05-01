@@ -20,10 +20,24 @@ const PORT = Number(process.env.PORT) || 3000;
 const FRONTEND_DIR = path.resolve(__dirname, "../../frontend/www");
 
 app.set("trust proxy", 1);
+const FRAME_ANCESTORS = [
+  "'self'",
+  "https://isidorsson.com",
+  "https://*.isidorsson.com",
+  "https://*.pages.dev",
+  "http://localhost:5173",
+  "http://localhost:4173",
+];
+
 app.use(
   helmet({
-    contentSecurityPolicy: false, // Ionic inlines styles; relax for demo simplicity
+    contentSecurityPolicy: {
+      useDefaults: false,
+      directives: { frameAncestors: FRAME_ANCESTORS },
+    },
+    frameguard: false, // X-Frame-Options can't list multiple origins; CSP frame-ancestors handles it
     crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" },
   }),
 );
 app.use(compression());
