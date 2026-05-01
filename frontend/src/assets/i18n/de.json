@@ -71,6 +71,24 @@
       "feasible": "Genug Zeit — wir wählen die günstigsten Stunden.",
       "tight": "Knappes Fenster — Ladung läuft durchgehend."
     },
+    "eyebrowForecast": "Live-Netz",
+    "forecast": {
+      "title": "Preis & CO₂ live — nächste 24 h",
+      "refresh": "Aktualisieren",
+      "refreshAria": "Prognosedaten aktualisieren",
+      "aria": "Stundenpreis-Balkendiagramm",
+      "empty": "Warte auf Prognosedaten…",
+      "error": "Live-Prognose nicht verfügbar. Zeige lokale Mock-Daten.",
+      "fillFormHint": "Setze ein Ziel oberhalb der aktuellen Ladung, um dein Fenster zu sehen.",
+      "legendOther": "Andere Stunden",
+      "legendOptimal": "Optimale Stunden",
+      "estCost": "Gesch. Kosten",
+      "estCo2": "CO₂-Fußabdruck",
+      "bestWindow": "Bestes Fenster",
+      "avgPrice": "≈ {{price}} {{currency}}/kWh Ø",
+      "co2Equiv": "basierend auf Netzintensität",
+      "savings": "−{{pct}}% vs sofort laden"
+    },
     "eyebrowPriority": "Priorität",
     "priority": {
       "title": "Kosten oder CO₂?",
@@ -128,6 +146,15 @@
       "denied": "Berechtigung verweigert",
       "unsupported": "Nicht unterstützt",
       "error": "Fehler · erneut versuchen"
+    },
+    "eyebrowCompare": "Vergleich",
+    "compare": {
+      "title": "Optimiert vs. sofort laden",
+      "help": "Kumulative Kosten über den Prognosezeitraum. Gestrichelt = sofort. Durchgezogen = optimiert.",
+      "aria": "Liniendiagramm der kumulativen Kosten",
+      "naive": "Sofort",
+      "optimized": "Optimiert",
+      "savings": "−{{pct}}% gespart"
     },
     "eyebrowForecast": "Prognose",
     "forecast": {

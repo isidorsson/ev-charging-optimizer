@@ -9,6 +9,18 @@
   gap: 22px;
 }
 
+.compare-card {
+  background: var(--app-bg-card);
+  border: 1px solid var(--app-divider);
+}
+
+.section-help {
+  margin: 4px 0 0;
+  font-size: 0.86rem;
+  color: var(--app-text-muted);
+  max-width: 60ch;
+}
+
 /* ============================================================
    Output hero — header + KPI band
    ============================================================ */

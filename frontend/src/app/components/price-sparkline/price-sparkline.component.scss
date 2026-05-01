@@ -1,0 +1,111 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 4px;
+  color: var(--app-text-muted);
+  font-size: 0.88rem;
+}
+
+.empty .signal-dot {
+  background: var(--app-text-muted);
+  opacity: 0.5;
+}
+
+.empty-text {
+  letter-spacing: 0.02em;
+}
+
+.chart {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 600 / 140;
+  display: block;
+  overflow: visible;
+}
+
+.bars rect {
+  fill: var(--app-text-muted);
+  opacity: 0.32;
+  transition: opacity 160ms ease, fill 160ms ease;
+
+  &.highlighted {
+    fill: var(--brand-accent);
+    opacity: 1;
+  }
+
+  &:hover {
+    opacity: 0.85;
+
+    &.highlighted {
+      opacity: 1;
+    }
+  }
+}
+
+.axis text {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  fill: var(--app-text-muted);
+  letter-spacing: 0.04em;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 18px;
+  font-size: 0.74rem;
+  color: var(--app-text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.leg-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.leg-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+
+  &.base {
+    background: var(--app-text-muted);
+    opacity: 0.32;
+  }
+
+  &.hi {
+    background: var(--brand-accent);
+  }
+}
+
+.range {
+  margin-left: auto;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.78rem;
+  color: var(--app-text-body);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bars rect {
+    transition: none;
+  }
+}

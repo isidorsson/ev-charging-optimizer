@@ -71,6 +71,24 @@
       "feasible": "Plenty of time — we'll cherry-pick the cheapest hours.",
       "tight": "Tight window — charging will run continuously."
     },
+    "eyebrowForecast": "Live grid",
+    "forecast": {
+      "title": "Live price & carbon — next 24 h",
+      "refresh": "Refresh",
+      "refreshAria": "Refresh forecast data",
+      "aria": "Hourly price forecast bar chart",
+      "empty": "Awaiting forecast data…",
+      "error": "Could not load live forecast. Showing local mock data.",
+      "fillFormHint": "Set a target above current charge to preview your optimal window.",
+      "legendOther": "Other hours",
+      "legendOptimal": "Optimal hours",
+      "estCost": "Est. cost",
+      "estCo2": "CO₂ footprint",
+      "bestWindow": "Best window",
+      "avgPrice": "≈ {{price}} {{currency}}/kWh avg",
+      "co2Equiv": "based on grid intensity",
+      "savings": "−{{pct}}% vs plug-in-now"
+    },
     "eyebrowPriority": "Priority",
     "priority": {
       "title": "Cost or carbon?",
@@ -128,6 +146,15 @@
       "denied": "Permission denied",
       "unsupported": "Not supported",
       "error": "Error · retry"
+    },
+    "eyebrowCompare": "Comparison",
+    "compare": {
+      "title": "Optimized vs. plug-in-now",
+      "help": "Cumulative cost over the forecast horizon. Dashed = naive (charge starting now). Solid = optimized.",
+      "aria": "Cumulative cost comparison line chart",
+      "naive": "Naive",
+      "optimized": "Optimized",
+      "savings": "−{{pct}}% saved"
     },
     "eyebrowForecast": "Forecast",
     "forecast": {

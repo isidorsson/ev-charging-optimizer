@@ -71,6 +71,24 @@
       "feasible": "Gott om tid — vi plockar de billigaste timmarna.",
       "tight": "Snävt fönster — laddningen körs kontinuerligt."
     },
+    "eyebrowForecast": "Live-nät",
+    "forecast": {
+      "title": "Pris & koldioxid live — kommande 24 h",
+      "refresh": "Uppdatera",
+      "refreshAria": "Uppdatera prognosdata",
+      "aria": "Stapeldiagram över timpriser",
+      "empty": "Väntar på prognosdata…",
+      "error": "Kunde inte hämta live-prognos. Visar lokal mockdata.",
+      "fillFormHint": "Sätt en mållddning högre än aktuell för att förhandsvisa fönstret.",
+      "legendOther": "Övriga timmar",
+      "legendOptimal": "Optimala timmar",
+      "estCost": "Est. kostnad",
+      "estCo2": "CO₂-avtryck",
+      "bestWindow": "Bästa fönster",
+      "avgPrice": "≈ {{price}} {{currency}}/kWh snitt",
+      "co2Equiv": "baserat på nätintensitet",
+      "savings": "−{{pct}}% mot att ladda direkt"
+    },
     "eyebrowPriority": "Prioritet",
     "priority": {
       "title": "Kostnad eller koldioxid?",
@@ -128,6 +146,15 @@
       "denied": "Behörighet nekad",
       "unsupported": "Stöds ej",
       "error": "Fel · försök igen"
+    },
+    "eyebrowCompare": "Jämförelse",
+    "compare": {
+      "title": "Optimerat vs. ladda direkt",
+      "help": "Kumulativ kostnad över prognoshorisonten. Streckat = naivt (laddar direkt). Heldraget = optimerat.",
+      "aria": "Linjediagram över kumulativ kostnad",
+      "naive": "Naivt",
+      "optimized": "Optimerat",
+      "savings": "−{{pct}}% sparat"
     },
     "eyebrowForecast": "Prognos",
     "forecast": {

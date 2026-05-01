@@ -17,8 +17,10 @@ import { TranslatePipe } from "@ngx-translate/core";
 
 import { ScheduleStoreService } from "../../services/schedule-store.service";
 import { NotificationsService } from "../../services/notifications.service";
+import { ToastService } from "../../services/toast.service";
 import type { ScheduleSlot } from "../../services/api.service";
 import { LocalizedTimePipe } from "../../pipes/localized-time.pipe";
+import { CostComparisonComponent } from "../../components/cost-comparison/cost-comparison.component";
 
 interface BarSlot extends ScheduleSlot {
   priceRel: number;
@@ -43,6 +45,7 @@ interface BarSlot extends ScheduleSlot {
     IonLabel,
     LucideBell,
     LucideArrowLeft,
+    CostComparisonComponent,
   ],
   templateUrl: "./schedule.page.html",
   styleUrl: "./schedule.page.scss",
@@ -50,9 +53,11 @@ interface BarSlot extends ScheduleSlot {
 export class SchedulePage {
   private readonly store = inject(ScheduleStoreService);
   private readonly notifications = inject(NotificationsService);
+  private readonly toasts = inject(ToastService);
   private readonly router = inject(Router);
 
   readonly result = this.store.latest;
+  readonly inputs = this.store.inputs;
   readonly notifyState = signal<"idle" | "ok" | "denied" | "unsupported" | "error">("idle");
   readonly hoveredIndex = signal<number | null>(null);
 
@@ -88,13 +93,22 @@ export class SchedulePage {
         title: "⚡ Cheap charging window started",
         body: "Plug in now — your optimal slot just began.",
       });
-      if (out.ok) this.notifyState.set("ok");
-      else if (out.reason === "denied") this.notifyState.set("denied");
-      else if (out.reason === "unsupported")
+      if (out.ok) {
+        this.notifyState.set("ok");
+        this.toasts.success("Reminder scheduled");
+      } else if (out.reason === "denied") {
+        this.notifyState.set("denied");
+        this.toasts.warn("Notification permission denied");
+      } else if (out.reason === "unsupported") {
         this.notifyState.set("unsupported");
-      else this.notifyState.set("error");
+        this.toasts.warn("Notifications not supported on this device");
+      } else {
+        this.notifyState.set("error");
+        this.toasts.error("Could not schedule reminder");
+      }
     } catch {
       this.notifyState.set("error");
+      this.toasts.error("Could not schedule reminder");
     }
   }
 }

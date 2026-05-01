@@ -16,14 +16,14 @@
 
 <ion-content [fullscreen]="true">
   <div class="page schedule-page">
-    <ng-container *ngIf="result(); else empty">
+    @if (result(); as r) {
       <!-- ========== Header + Hero KPI ========== -->
       <section class="output-hero rise">
         <header class="result-head">
           <span class="eyebrow"><span class="num">∎</span>&nbsp;{{ "schedule.eyebrowOutput" | translate }}</span>
           <h1 class="display result-title">{{ "schedule.headline" | translate }}</h1>
           <p class="result-sub">
-            {{ "schedule.subline" | translate: { count: result()!.schedule.length } }}
+            {{ "schedule.subline" | translate: { count: r.schedule.length } }}
           </p>
         </header>
 
@@ -31,7 +31,7 @@
           <div class="kpi-main">
             <span class="kpi-pre">{{ "schedule.kpi.delta" | translate }}</span>
             <div class="kpi-value display">
-              <span class="minus" aria-hidden="true">−</span><span class="kpi-num">{{ (result()!.summary.savingsVsNaive * 100) | number: "1.0-0" }}</span><span class="kpi-pct">%</span>
+              <span class="minus" aria-hidden="true">−</span><span class="kpi-num">{{ (r.summary.savingsVsNaive * 100) | number: "1.0-0" }}</span><span class="kpi-pct">%</span>
             </div>
             <span class="kpi-foot">{{ "schedule.kpi.cheaper" | translate }}</span>
           </div>
@@ -40,19 +40,19 @@
             <div class="kpi-row">
               <dt>{{ "schedule.kpi.totalCost" | translate }}</dt>
               <dd class="kpi-fig metric">
-                {{ result()!.summary.totalCost | number: "1.2-2" }}<span class="kpi-unit">{{ result()!.summary.currency }}</span>
+                {{ r.summary.totalCost | number: "1.2-2" }}<span class="kpi-unit">{{ r.summary.currency }}</span>
               </dd>
             </div>
             <div class="kpi-row">
               <dt>{{ "schedule.kpi.co2" | translate }}</dt>
               <dd class="kpi-fig metric">
-                {{ (result()!.summary.totalCarbonGrams / 1000) | number: "1.1-1" }}<span class="kpi-unit">kg</span>
+                {{ (r.summary.totalCarbonGrams / 1000) | number: "1.1-1" }}<span class="kpi-unit">kg</span>
               </dd>
             </div>
             <div class="kpi-row">
               <dt>{{ "schedule.kpi.charging" | translate }}</dt>
               <dd class="kpi-fig metric">
-                {{ result()!.summary.chargingHours | number: "1.1-1" }}<span class="kpi-unit">h</span>
+                {{ r.summary.chargingHours | number: "1.1-1" }}<span class="kpi-unit">h</span>
               </dd>
             </div>
           </dl>
@@ -64,7 +64,7 @@
         <div class="window-prose">
           <span class="eyebrow"><span class="num">→</span>&nbsp;{{ "schedule.eyebrowWindow" | translate }}</span>
           <p class="window-time display">
-            {{ result()!.summary.cheapestWindowStart | localTime: "dayTime" }}
+            {{ r.summary.cheapestWindowStart | localTime: "dayTime" }}
           </p>
           <p class="window-meta">{{ "schedule.window.meta" | translate }}</p>
         </div>
@@ -73,28 +73,46 @@
           <ion-button
             fill="outline"
             (click)="enableAlert()"
-            [disabled]="!result()!.summary.cheapestWindowStart"
+            [disabled]="!r.summary.cheapestWindowStart"
           >
             <svg lucideBell slot="start"></svg>
             {{ "schedule.window.notify" | translate }}
           </ion-button>
 
-          <ion-chip
-            *ngIf="notifyState() !== 'idle'"
-            [color]="notifyState() === 'ok' ? 'success' : 'warning'"
-            aria-live="polite"
-          >
-            <ion-label>
-              <ng-container [ngSwitch]="notifyState()">
-                <span *ngSwitchCase="'ok'">{{ "schedule.notify.scheduled" | translate }}</span>
-                <span *ngSwitchCase="'denied'">{{ "schedule.notify.denied" | translate }}</span>
-                <span *ngSwitchCase="'unsupported'">{{ "schedule.notify.unsupported" | translate }}</span>
-                <span *ngSwitchCase="'error'">{{ "schedule.notify.error" | translate }}</span>
-              </ng-container>
-            </ion-label>
-          </ion-chip>
+          @if (notifyState() !== 'idle') {
+            <ion-chip
+              [color]="notifyState() === 'ok' ? 'success' : 'warning'"
+              aria-live="polite"
+            >
+              <ion-label>
+                @switch (notifyState()) {
+                  @case ('ok') { <span>{{ "schedule.notify.scheduled" | translate }}</span> }
+                  @case ('denied') { <span>{{ "schedule.notify.denied" | translate }}</span> }
+                  @case ('unsupported') { <span>{{ "schedule.notify.unsupported" | translate }}</span> }
+                  @case ('error') { <span>{{ "schedule.notify.error" | translate }}</span> }
+                }
+              </ion-label>
+            </ion-chip>
+          }
         </div>
       </section>
+
+      <!-- ========== Cost comparison ========== -->
+      @if (inputs(); as inp) {
+        <section class="surface-card compare-card rise rise-2b">
+          <header class="section-head">
+            <span class="eyebrow"><span class="num">→</span>&nbsp;{{ "schedule.eyebrowCompare" | translate }}</span>
+            <h2 class="section-title">{{ "schedule.compare.title" | translate }}</h2>
+            <p class="section-help">{{ "schedule.compare.help" | translate }}</p>
+          </header>
+          <app-cost-comparison
+            [slots]="r.schedule"
+            [maxChargeKw]="inp.maxChargeKw"
+            [energyKwh]="r.summary.energyNeededKwh"
+            [currency]="r.summary.currency"
+          ></app-cost-comparison>
+        </section>
+      }
 
       <!-- ========== Chart ========== -->
       <section class="surface-card chart-card rise rise-3">
@@ -108,31 +126,32 @@
 
         <div class="bars-wrap">
           <div class="bars" role="img" [attr.aria-label]="'schedule.forecast.aria' | translate">
-            <div
-              class="bar-col"
-              *ngFor="let b of bars(); let i = index"
-              [class.charging]="b.charging"
-              [class.is-hovered]="hoveredIndex() === i"
-              (mouseenter)="hoveredIndex.set(i)"
-              (mouseleave)="hoveredIndex.set(null)"
-              (focus)="hoveredIndex.set(i)"
-              (blur)="hoveredIndex.set(null)"
-              tabindex="0"
-              [attr.aria-label]="
-                'schedule.forecast.barAria' | translate: {
-                  hour: (b.startsAt | localTime),
-                  price: (b.pricePerKwh | number: '1.2-3'),
-                  currency: b.currency,
-                  co2: (b.intensityGCo2PerKwh | number: '1.0-0'),
-                  state: b.charging ? ('schedule.forecast.stateCharging' | translate) : ''
-                }
-              "
-            >
-              <div class="bar-track">
-                <div class="bar" [style.height.%]="6 + b.priceRel * 94"></div>
+            @for (b of bars(); track $index; let i = $index) {
+              <div
+                class="bar-col"
+                [class.charging]="b.charging"
+                [class.is-hovered]="hoveredIndex() === i"
+                (mouseenter)="hoveredIndex.set(i)"
+                (mouseleave)="hoveredIndex.set(null)"
+                (focus)="hoveredIndex.set(i)"
+                (blur)="hoveredIndex.set(null)"
+                tabindex="0"
+                [attr.aria-label]="
+                  'schedule.forecast.barAria' | translate: {
+                    hour: (b.startsAt | localTime),
+                    price: (b.pricePerKwh | number: '1.2-3'),
+                    currency: b.currency,
+                    co2: (b.intensityGCo2PerKwh | number: '1.0-0'),
+                    state: b.charging ? ('schedule.forecast.stateCharging' | translate) : ''
+                  }
+                "
+              >
+                <div class="bar-track">
+                  <div class="bar" [style.height.%]="6 + b.priceRel * 94"></div>
+                </div>
+                <span class="hour metric">{{ b.startsAt | localTime }}</span>
               </div>
-              <span class="hour metric">{{ b.startsAt | localTime }}</span>
-            </div>
+            }
           </div>
         </div>
 
@@ -146,7 +165,7 @@
             <span>{{ "schedule.legend.skip" | translate }}</span>
           </span>
           <span class="legend-axis metric">
-            {{ "schedule.legend.axis" | translate: { currency: result()!.summary.currency } }}
+            {{ "schedule.legend.axis" | translate: { currency: r.summary.currency } }}
           </span>
         </footer>
       </section>
@@ -173,42 +192,43 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                *ngFor="let s of bars(); let i = index"
-                [class.charging]="s.charging"
-                [class.is-hovered]="hoveredIndex() === i"
-                (mouseenter)="hoveredIndex.set(i)"
-                (mouseleave)="hoveredIndex.set(null)"
-              >
-                <td class="td-state">
-                  <span class="state-pip" aria-hidden="true"></span>
-                </td>
-                <td class="td-time metric">
-                  {{ s.startsAt | localTime: "dayTime" }}
-                </td>
-                <td class="td-state-text">
-                  <span class="state-badge" [class.on]="s.charging">
-                    {{ (s.charging ? "schedule.ledger.charge" : "schedule.ledger.skip") | translate }}
-                  </span>
-                </td>
-                <td class="td-num metric">
-                  {{ s.energyKwh | number: "1.1-1" }}<span class="cell-unit">kWh</span>
-                </td>
-                <td class="td-num metric">
-                  {{ s.pricePerKwh | number: "1.2-3" }}<span class="cell-unit">{{ s.currency }}</span>
-                </td>
-                <td class="td-num metric">
-                  {{ s.intensityGCo2PerKwh | number: "1.0-0" }}<span class="cell-unit">g</span>
-                </td>
-                <td class="td-bar">
-                  <div class="row-bar-track" aria-hidden="true">
-                    <div
-                      class="row-bar"
-                      [style.width.%]="6 + s.priceRel * 94"
-                    ></div>
-                  </div>
-                </td>
-              </tr>
+              @for (s of bars(); track $index; let i = $index) {
+                <tr
+                  [class.charging]="s.charging"
+                  [class.is-hovered]="hoveredIndex() === i"
+                  (mouseenter)="hoveredIndex.set(i)"
+                  (mouseleave)="hoveredIndex.set(null)"
+                >
+                  <td class="td-state">
+                    <span class="state-pip" aria-hidden="true"></span>
+                  </td>
+                  <td class="td-time metric">
+                    {{ s.startsAt | localTime: "dayTime" }}
+                  </td>
+                  <td class="td-state-text">
+                    <span class="state-badge" [class.on]="s.charging">
+                      {{ (s.charging ? "schedule.ledger.charge" : "schedule.ledger.skip") | translate }}
+                    </span>
+                  </td>
+                  <td class="td-num metric">
+                    {{ s.energyKwh | number: "1.1-1" }}<span class="cell-unit">kWh</span>
+                  </td>
+                  <td class="td-num metric">
+                    {{ s.pricePerKwh | number: "1.2-3" }}<span class="cell-unit">{{ s.currency }}</span>
+                  </td>
+                  <td class="td-num metric">
+                    {{ s.intensityGCo2PerKwh | number: "1.0-0" }}<span class="cell-unit">g</span>
+                  </td>
+                  <td class="td-bar">
+                    <div class="row-bar-track" aria-hidden="true">
+                      <div
+                        class="row-bar"
+                        [style.width.%]="6 + s.priceRel * 94"
+                      ></div>
+                    </div>
+                  </td>
+                </tr>
+              }
             </tbody>
           </table>
         </div>
@@ -220,9 +240,7 @@
           scoring · (1−w)·norm(p) + w·norm(c)
         </span>
       </footer>
-    </ng-container>
-
-    <ng-template #empty>
+    } @else {
       <div class="empty">
         <span class="eyebrow"><span class="num">∅</span>&nbsp;{{ "schedule.empty.eyebrow" | translate }}</span>
         <h2 class="display empty-title">{{ "schedule.empty.title" | translate }}</h2>
@@ -234,6 +252,6 @@
           {{ "schedule.empty.back" | translate }}
         </ion-button>
       </div>
-    </ng-template>
+    }
   </div>
 </ion-content>

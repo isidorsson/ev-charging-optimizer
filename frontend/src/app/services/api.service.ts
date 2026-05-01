@@ -12,6 +12,20 @@ export interface ScheduleSlot {
   energyKwh: number;
 }
 
+export interface ForecastSlot {
+  startsAt: string;
+  endsAt: string;
+  pricePerKwh: number;
+  currency: string;
+  intensityGCo2PerKwh: number;
+}
+
+export interface ForecastResponse {
+  region: string;
+  hours: number;
+  forecast: ForecastSlot[];
+}
+
 export interface OptimizeSummary {
   energyNeededKwh: number;
   chargingHours: number;
@@ -46,6 +60,14 @@ export class ApiService {
   optimize(req: OptimizeRequest): Promise<OptimizeResponse> {
     return firstValueFrom(
       this.http.post<OptimizeResponse>("/api/optimize", req),
+    );
+  }
+
+  getForecast(region: string, hours = 24): Promise<ForecastResponse> {
+    return firstValueFrom(
+      this.http.get<ForecastResponse>("/api/forecast", {
+        params: { region, hours },
+      }),
     );
   }
 

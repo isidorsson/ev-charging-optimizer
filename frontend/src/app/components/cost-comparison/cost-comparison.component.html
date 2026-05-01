@@ -1,0 +1,48 @@
+@if (slots().length > 0) {
+  <figure class="cmp">
+    <svg
+      class="svg"
+      [attr.viewBox]="viewBox"
+      preserveAspectRatio="none"
+      role="img"
+      [attr.aria-label]="'schedule.compare.aria' | translate"
+    >
+      <g class="grid" aria-hidden="true">
+        @for (t of yTicks(); track $index) {
+          <line x1="40" [attr.y1]="t.y" x2="588" [attr.y2]="t.y"></line>
+          <text class="y-label" x="36" [attr.y]="t.y + 3" text-anchor="end">
+            {{ t.v | number: "1.1-1" }}
+          </text>
+        }
+        @for (t of xTicks(); track $index) {
+          <text class="x-label" [attr.x]="t.x" y="172" text-anchor="middle">
+            {{ t.label }}
+          </text>
+        }
+      </g>
+
+      <path class="line naive" [attr.d]="naivePath()" fill="none" />
+      <path class="line opt" [attr.d]="optimizedPath()" fill="none" />
+    </svg>
+
+    <figcaption class="cmp-legend">
+      <span class="leg-item naive">
+        <span class="swatch" aria-hidden="true"></span>
+        {{ "schedule.compare.naive" | translate }}
+        <span class="metric val">
+          {{ naiveTotal() | number: "1.2-2" }} {{ currency() }}
+        </span>
+      </span>
+      <span class="leg-item opt">
+        <span class="swatch" aria-hidden="true"></span>
+        {{ "schedule.compare.optimized" | translate }}
+        <span class="metric val">
+          {{ optTotal() | number: "1.2-2" }} {{ currency() }}
+        </span>
+      </span>
+      <span class="leg-savings metric">
+        {{ "schedule.compare.savings" | translate: { pct: ((savings() * 100) | number: "1.0-0") } }}
+      </span>
+    </figcaption>
+  </figure>
+}

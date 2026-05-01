@@ -71,6 +71,24 @@
       "feasible": "Tiempo de sobra — elegiremos las horas más baratas.",
       "tight": "Ventana ajustada — la carga será continua."
     },
+    "eyebrowForecast": "Red en vivo",
+    "forecast": {
+      "title": "Precio & CO₂ en vivo — próximas 24 h",
+      "refresh": "Actualizar",
+      "refreshAria": "Actualizar datos de pronóstico",
+      "aria": "Gráfico de barras de precios horarios",
+      "empty": "Esperando datos de pronóstico…",
+      "error": "No se pudo cargar el pronóstico. Mostrando datos simulados.",
+      "fillFormHint": "Pon un objetivo mayor que la carga actual para previsualizar tu ventana.",
+      "legendOther": "Otras horas",
+      "legendOptimal": "Horas óptimas",
+      "estCost": "Coste est.",
+      "estCo2": "Huella CO₂",
+      "bestWindow": "Mejor ventana",
+      "avgPrice": "≈ {{price}} {{currency}}/kWh medio",
+      "co2Equiv": "basado en intensidad de red",
+      "savings": "−{{pct}}% vs cargar ya"
+    },
     "eyebrowPriority": "Prioridad",
     "priority": {
       "title": "¿Coste o CO₂?",
@@ -128,6 +146,15 @@
       "denied": "Permiso denegado",
       "unsupported": "No soportado",
       "error": "Error · reintenta"
+    },
+    "eyebrowCompare": "Comparación",
+    "compare": {
+      "title": "Optimizado vs. cargar ya",
+      "help": "Coste acumulado durante el horizonte. Discontinuo = cargar ya. Sólido = optimizado.",
+      "aria": "Gráfico de líneas de coste acumulado",
+      "naive": "Cargar ya",
+      "optimized": "Optimizado",
+      "savings": "−{{pct}}% ahorrado"
     },
     "eyebrowForecast": "Pronóstico",
     "forecast": {

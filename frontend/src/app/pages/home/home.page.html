@@ -206,14 +206,110 @@
           [class.warn]="!preview().feasible && preview().energyKwh > 0"
         >
           <span class="signal-dot" aria-hidden="true"></span>
-          <span *ngIf="preview().feasible">
-            {{ "home.preview.feasible" | translate }}
-          </span>
-          <span *ngIf="!preview().feasible">
-            {{ "home.preview.tight" | translate }}
-          </span>
+          @if (preview().feasible) {
+            <span>{{ "home.preview.feasible" | translate }}</span>
+          } @else {
+            <span>{{ "home.preview.tight" | translate }}</span>
+          }
         </p>
       </aside>
+
+      <!-- 04b — Live forecast & estimate -->
+      <section class="surface-card forecast-card rise rise-4" aria-live="polite">
+        <header class="section-head forecast-head">
+          <div>
+            <span class="eyebrow">
+              <span class="num">∎</span>&nbsp;{{ "home.eyebrowForecast" | translate }}
+            </span>
+            <h2 class="section-title">{{ "home.forecast.title" | translate }}</h2>
+          </div>
+          <button
+            type="button"
+            class="forecast-refresh"
+            (click)="refreshForecast()"
+            [disabled]="forecastLoading()"
+            [attr.aria-label]="'home.forecast.refreshAria' | translate"
+          >
+            @if (forecastLoading()) {
+              <ion-spinner name="dots"></ion-spinner>
+            } @else {
+              <svg lucideRefreshCw></svg>
+            }
+            <span class="refresh-label">{{ "home.forecast.refresh" | translate }}</span>
+          </button>
+        </header>
+
+        @if (forecastLoading() && forecastSlots().length === 0) {
+          <div class="forecast-skeleton" aria-hidden="true">
+            <div class="skel-bar" style="--h: 30%"></div>
+            <div class="skel-bar" style="--h: 60%"></div>
+            <div class="skel-bar" style="--h: 45%"></div>
+            <div class="skel-bar" style="--h: 80%"></div>
+            <div class="skel-bar" style="--h: 50%"></div>
+            <div class="skel-bar" style="--h: 35%"></div>
+            <div class="skel-bar" style="--h: 70%"></div>
+            <div class="skel-bar" style="--h: 55%"></div>
+          </div>
+        } @else if (forecastError()) {
+          <p class="forecast-error" role="alert">
+            <svg lucideCircleAlert></svg>
+            <span>{{ "home.forecast.error" | translate }}</span>
+          </p>
+        } @else {
+          <app-price-sparkline
+            [slots]="forecastSlots()"
+            [highlightCount]="highlightHours()"
+            [carbonWeight]="form().carbonWeight"
+          ></app-price-sparkline>
+
+          @if (liveEstimate(); as est) {
+            <div class="estimate-grid">
+              <div class="estimate-stat">
+                <span class="estimate-label">
+                  <svg lucideTrendingDown></svg>
+                  {{ "home.forecast.estCost" | translate }}
+                </span>
+                <span class="estimate-num display">
+                  {{ est.totalCost | number: "1.2-2" }}<span class="estimate-unit">{{ est.currency }}</span>
+                </span>
+                <span class="estimate-sub metric">
+                  {{ "home.forecast.avgPrice" | translate: { price: (est.avgPrice | number: "1.2-2"), currency: est.currency } }}
+                </span>
+              </div>
+
+              <div class="estimate-stat">
+                <span class="estimate-label">
+                  <svg lucideLeaf></svg>
+                  {{ "home.forecast.estCo2" | translate }}
+                </span>
+                <span class="estimate-num display">
+                  {{ (est.totalCarbon / 1000) | number: "1.2-2" }}<span class="estimate-unit">kg</span>
+                </span>
+                <span class="estimate-sub metric">
+                  {{ "home.forecast.co2Equiv" | translate }}
+                </span>
+              </div>
+
+              <div class="estimate-stat highlight">
+                <span class="estimate-label">
+                  <svg lucideClock></svg>
+                  {{ "home.forecast.bestWindow" | translate }}
+                </span>
+                <span class="estimate-num display">
+                  {{ est.cheapestStart | localTime }}–{{ est.cheapestEnd | localTime }}
+                </span>
+                <span class="estimate-sub metric">
+                  {{ "home.forecast.savings" | translate: { pct: ((est.savingsPct * 100) | number: "1.0-0") } }}
+                </span>
+              </div>
+            </div>
+          } @else {
+            <p class="forecast-foot subtle">
+              {{ "home.forecast.fillFormHint" | translate }}
+            </p>
+          }
+        }
+      </section>
 
       <!-- 05 — Priority slider -->
       <section class="surface-card priority-card rise rise-5">
@@ -259,20 +355,20 @@
 
       <!-- Submit -->
       <div class="cta rise rise-6">
-        <p
-          *ngIf="error()"
-          class="error"
-          role="alert"
-          aria-live="assertive"
-        >
-          <svg lucideCircleAlert></svg>
-          <span>{{ error()! | translate }}</span>
-        </p>
+        @if (error()) {
+          <p class="error" role="alert" aria-live="assertive">
+            <svg lucideCircleAlert></svg>
+            <span>{{ error()! | translate }}</span>
+          </p>
+        }
 
         <ion-button type="submit" expand="block" [disabled]="loading()">
-          <ion-spinner *ngIf="loading()" name="crescent" slot="start"></ion-spinner>
-          <span *ngIf="!loading()">{{ "home.cta.submit" | translate }}</span>
-          <span *ngIf="loading()">{{ "home.cta.loading" | translate }}</span>
+          @if (loading()) {
+            <ion-spinner name="crescent" slot="start"></ion-spinner>
+            <span>{{ "home.cta.loading" | translate }}</span>
+          } @else {
+            <span>{{ "home.cta.submit" | translate }}</span>
+          }
         </ion-button>
 
         <p class="cta-foot">

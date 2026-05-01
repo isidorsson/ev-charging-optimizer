@@ -1,0 +1,55 @@
+@if (slots().length === 0) {
+  <div class="empty">
+    <span class="signal-dot" aria-hidden="true"></span>
+    <span class="empty-text">{{ "home.forecast.empty" | translate }}</span>
+  </div>
+} @else {
+  <figure class="chart" [attr.aria-label]="'home.forecast.aria' | translate">
+    <svg
+      class="svg"
+      [attr.viewBox]="viewBox"
+      preserveAspectRatio="none"
+      role="img"
+      [attr.aria-label]="'home.forecast.aria' | translate"
+    >
+      <g class="bars">
+        @for (b of bars(); track $index) {
+          <rect
+            [attr.x]="b.x"
+            [attr.y]="b.y"
+            [attr.width]="b.w"
+            [attr.height]="b.h"
+            [class.highlighted]="b.highlighted"
+            rx="1.5"
+          >
+            <title>
+              {{ b.hour.toString().padStart(2, "0") }}:00 ·
+              {{ b.price | number: "1.2-2" }} {{ currency() }}/kWh ·
+              {{ b.intensity | number: "1.0-0" }} g/kWh
+            </title>
+          </rect>
+        }
+      </g>
+      <g class="axis" aria-hidden="true">
+        @for (l of axisLabels(); track $index) {
+          <text [attr.x]="l.x" y="134" text-anchor="middle">{{ l.label }}</text>
+        }
+      </g>
+    </svg>
+
+    <figcaption class="legend">
+      <span class="leg-item">
+        <span class="leg-swatch base" aria-hidden="true"></span>
+        {{ "home.forecast.legendOther" | translate }}
+      </span>
+      <span class="leg-item">
+        <span class="leg-swatch hi" aria-hidden="true"></span>
+        {{ "home.forecast.legendOptimal" | translate }}
+      </span>
+      <span class="range metric" translate="no">
+        {{ priceMin() | number: "1.2-2" }}–{{ priceMax() | number: "1.2-2" }}
+        {{ currency() }}/kWh
+      </span>
+    </figcaption>
+  </figure>
+}
