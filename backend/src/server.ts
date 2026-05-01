@@ -5,11 +5,12 @@ import express from "express";
 import compression from "compression";
 import helmet from "helmet";
 import cors from "cors";
-import morgan from "morgan";
 
 import { optimizeRouter } from "./routes/optimize.js";
 import { forecastRouter } from "./routes/forecast.js";
 import { pushRouter } from "./routes/push.js";
+import { metaRouter } from "./routes/meta.js";
+import { accessLog, requestContext } from "./middleware/request-context.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,12 +29,10 @@ app.use(
 app.use(compression());
 app.use(cors());
 app.use(express.json({ limit: "100kb" }));
-app.use(morgan(process.env.NODE_ENV === "production" ? "tiny" : "dev"));
+app.use(requestContext);
+app.use(accessLog);
 
-app.get("/api/health", (_req, res) => {
-  res.json({ ok: true, ts: new Date().toISOString() });
-});
-
+app.use("/api", metaRouter);
 app.use("/api", optimizeRouter);
 app.use("/api", forecastRouter);
 app.use("/api", pushRouter);
